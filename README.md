@@ -1,4 +1,3 @@
-# android_triage
 
 Bash script to extract data from an Android device
 
