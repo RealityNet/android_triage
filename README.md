@@ -13,7 +13,7 @@ Developed and tested on Mac OS X Mojave (10.14.6), but should work also on Linux
 
 - Activate ADB on the Android Device
 - Connect and pair the Android Device and the host
-- Make the script executable (chmod +x ios_bfu_triage.sh)
+- Make the script executable (chmod +x android_triage.sh)
 - Execute the script and follow the instructions
 
 See also the original blog post here
