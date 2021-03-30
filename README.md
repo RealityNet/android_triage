@@ -20,6 +20,12 @@ See also the original blog post here
 
 https://blog.digital-forensics.it/2021/03/triaging-modern-android-devices-aka.html
 
-<b>Version 0.1 [30/3/2020]</b>
+<b>Version 1.0 [30/3/2020]</b>
 
 First release
+
+<b>Version 1.1 [30/3/2020]</b>
+
+- Added "-keyvalue" in the ADB backup commant (Thanks Yogesh Khatri - @SwiftForensics)
+- Added option 10 to dump file system folders and files not requiring root privileges
+- Minor fixes
