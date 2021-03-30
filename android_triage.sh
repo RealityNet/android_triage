@@ -2,7 +2,7 @@
 
 # android_triage
 # Mattia Epifani && Giovanni Rattaro
-# 20210330 V1.0
+# 20210330 V1.1
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ check_tools() {
 
 set_var () {
 	# generic var
-	VERSION="1.0 - 202103130"
+	VERSION="1.1 - 20210330"
 
 	# generic commands var
 	SHELL_COMMAND="${ADB} shell"
@@ -90,13 +90,17 @@ set_path () {
 	# Directories for 'private' image
 	BACKUP_DIR="${SPATH}/${NOW}_backup"
 
-	# Directories for full file system image
+	# Directories for APKs image
 	APK_DIR="${SPATH}/${NOW}_apk"
 	APK_LOG_FILE="$APK_DIR/log_apk_acquisition.txt"
 
 	# Directories for content providers
 	CONTENTPROVIDER_DIR="${SPATH}/${NOW}_contentprovider"
 	CONTENTPROVIDER_LOG_FILE="$CONTENTPROVIDER_DIR/${NOW}_contentprovider.txt"
+    
+	# Directories for file system dump
+	ALL_DIR="${SPATH}/${NOW}_filesystem"
+	ALL_LOG_FILE="$ALL_DIR/log_filesystem_acquisition.txt"
 }
 
 check_device () {
@@ -437,12 +441,12 @@ adb_backup () {
 	mkdir -p "$BACKUP_DIR"
 	echo -e "[*]\n[*]"
 	echo "[*] This option creates an Android Backup by using the command" 
-	echo "[*] adb backup -all -shared -system -apk -f backup.ab"
+	echo "[*] adb backup -all -shared -system -keyvalue -apk -f backup.ab"
 	echo -e "[*]\n[*]"    
 	echo "[*] ADB Backup started at ${NOW}" | tee -a "$BACKUP_DIR"/backup_log.txt
 	echo -e "[*]\n[*]"      
-	echo "[*] Executing 'adb backup -all -shared -system -apk -f backup.ab'" 
-	$BACKUP_COMMAND -all -shared -system -apk -f "$BACKUP_DIR"/backup.ab
+	echo "[*] Executing 'adb backup -all -shared -system -keyvalue -apk  -f backup.ab'" 
+	$BACKUP_COMMAND -all -shared -system -keyvalue -apk -f "$BACKUP_DIR"/backup.ab
 	echo -e "[*]\n[*]" 
 	time_update	
 	echo "[*] ADB Backup completed at ${NOW}" | tee -a "$BACKUP_DIR"/backup_log.txt
@@ -493,10 +497,87 @@ apk () {
 	time_update
 	echo "[*] APK Acquisition completed at ${NOW}" | tee -a "$APK_LOG_FILE"
 	echo -e "[*]\n[*]" 
-	echo "[*] sha1sum of ${APK_DIR}/data.tar in progress" | tee -a "$APK_LOG_FILE"
-	shasum "${APK_DIR}"/data.tar | tee -a "$APK_LOG_FILE"
+	echo "[*] sha1sum of ${APK_DIR}/data_apks.tar in progress" | tee -a "$APK_LOG_FILE"
+	shasum "${APK_DIR}"/data_apks.tar | tee -a "$APK_LOG_FILE"
 
 	clear && dialog --title "android triage" --msgbox "APK Acquisition completed at ${NOW}" 6 40
+	menu
+}
+
+all () {
+	set_path
+	mkdir -p "$ALL_DIR"
+	echo -e "[*]\n[*]"
+	echo "[*] This option dump files and folders available without root acces" 
+	echo -e "[*]\n[*]"      
+	echo "[*] Data Acquisition started at ${NOW}" | tee "$ALL_LOG_FILE"
+	echo -e "[*]\n[*]"  
+    
+    mkdir -p ${ALL_DIR}/filesystem
+    
+	echo "[*] Extracting APK from /data/ and /vendor/"
+	$SHELL_COMMAND pm list packages -f -u > ${ALL_DIR}/${ANDROID_ID}_apk_list.txt
+
+	SELECTED_FILE=${ALL_DIR}/${ANDROID_ID}_apk_list.txt
+
+	echo "[*] Pulling APK files"
+	while read -r line
+	do
+		line=${line#"package:"}
+		target_file=${line%%".apk="*}
+		target_file=$target_file".apk"
+		IFS='/' read -ra tokens <<<"$target_file"
+		apk_type=${tokens[1]}
+		app_folder=${tokens[2]}
+		app_path=${tokens[3]}
+		apk_name=${tokens[4]}
+
+		if [[ ${apk_type} != "system" ]]; then
+		    mkdir -p ${ALL_DIR}/filesystem/${apk_type}/${app_folder}/${app_path}
+		    $PULL_COMMAND $target_file ${ALL_DIR}/filesystem/${apk_type}/${app_folder}/${app_path}/${apk_name}
+		fi
+	continue
+	done < "$SELECTED_FILE" 
+
+	echo "[*] Extracting /system/"
+	mkdir -p ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/ ${ALL_DIR}/filesystem/
+	$PULL_COMMAND /system/app ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/bin ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/cameradata ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/container ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/etc ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/fake-libs ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/fonts ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/framework ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/hidden ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/lib ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/lib64 ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/media ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/priv-app ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/saiv ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/tts ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/usr ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/vendor ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/xbin ${ALL_DIR}/filesystem/system
+	mkdir -p $ALL_DIR/filesystem/data/system
+    $SHELL_COMMAND cat /data/system/uiderrors.txt > $ALL_DIR/filesystem/data/system/uiderrors.txt
+
+	echo "[*] Extracting /sdcard/"
+	mkdir -p ${ALL_DIR}/filesystem/sdcard
+	$PULL_COMMAND /sdcard/ ${ALL_DIR}/filesystem/
+
+	echo "[*] Creating TAR file" 
+	tar -cvf "$ALL_DIR"/filesystem.tar -C ${ALL_DIR} filesystem >> "$ALL_LOG_FILE" 2>/dev/null
+    
+	echo -e "[*]\n[*]" 
+	time_update
+	echo "[*] File System Acquisition completed at ${NOW}" | tee -a "$ALL_LOG_FILE"
+	echo -e "[*]\n[*]" 
+	echo "[*] sha1sum of ${ALL_DIR}/filesystem.tar in progress" | tee -a "$ALL_LOG_FILE"
+	shasum "${ALL_DIR}"/filesystem.tar | tee -a "$ALL_LOG_FILE"
+
+	clear && dialog --title "android triage" --msgbox "file system dump completed at ${NOW}" 6 40
 	menu
 }
 
@@ -638,8 +719,9 @@ menu () {
 	7 "Acquire /sdcard folder" \
 	8 "Extract APK files from /data folder" \
 	9 "Extract data from content providers" \
-	10 "Help" \
-	11 "Exit" 2> $tmpfile
+	10 "File system dump (no root)" \
+	11 "Help" \
+	12 "Exit" 2> $tmpfile
 
 	return=$?
 	choice=`cat $tmpfile`
@@ -716,12 +798,17 @@ selected () {
           confirmation;
 		  content_provider;
 		  ;;
-        10)
+		10)
+		  # all
+          confirmation;
+		  all;
+		  ;;
+        11)
 		  # help
           clear && dialog --title "android triage" --msgbox "Android Triage Script\n[ Version \"$VERSION\" ]\n\n" 60 60;
 		  menu
 		  ;;
-		11)
+		12)
 		  # exit
 		  clear;
 		  exit 1;
