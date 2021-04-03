@@ -2,7 +2,7 @@
 
 # android_triage
 # Mattia Epifani && Giovanni Rattaro
-# 20210330 V1.1
+# 20210403 V1.2
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ check_tools() {
 
 set_var () {
 	# generic var
-	VERSION="1.1 - 20210330"
+	VERSION="1.2 - 20210403"
 
 	# generic commands var
 	SHELL_COMMAND="${ADB} shell"
@@ -146,6 +146,7 @@ info_collect () {
         MEDIA_SOUND=$($SHELL_COMMAND getprop rro.config.media_sound)
         DEVICE_TIME=$($SHELL_COMMAND date)
         ENCRYPTION=$($SHELL_COMMAND getprop ro.crypto.state)
+        UPTIME=$($SHELL_COMMAND uptime -s)
 
         ENCRYPTION_TYPE="none"
         if [[ ! ${ENCRYPTION} =~ "unecrypted" ]]; then
@@ -203,6 +204,7 @@ info_collect () {
 	[*] Alarm alert: ${ALARM_ALERT}
 	[*] Ringtone: ${RINGTONE}
 	[*] Media sound: ${MEDIA_SOUND}
+	[*] Uptime since: ${UPTIME}
 	[*] Device time: ${DEVICE_TIME}
 	[*] Acquisition time: ${NOW}
 	[*] ${ROOT}
@@ -254,7 +256,8 @@ live_commands () {
 	echo "[*] service list" && $SHELL_COMMAND service list > "$LIVE_DIR"/service_list.txt
 	echo "[*] logcat -S -b all" && $SHELL_COMMAND logcat -S -b all > "$LIVE_DIR"/logcat-S-b_all.txt
 	echo "[*] logcat -d -b all V:*" && $SHELL_COMMAND logcat -d -b all V:*  > "$LIVE_DIR"/logcat-d-b-all_V.txt
-	echo -e "[*]\n[*]"     
+	echo -e "[*]\n[*]"   
+    
 	time_update
 	echo "[*] LIVE Acquisition completed at ${NOW}" | tee -a $LIVE_LOG_FILE
     
@@ -318,7 +321,7 @@ dumpsys () {
 	set_path
 	mkdir -p "$DUMPSYS_DIR"
 	echo -e "[*]\n[*]"
-	echo "[*] This option extracts dumpsys information" 
+	echo "[*] This option extracts bugreport, dumpsys and appops information" 
 	echo -e "[*]\n[*]"
 	echo "[*] DUMPSYS acquisition started at ${NOW}" | tee "$DUMPSYS_LOG_FILE"
 	echo -e "[*]\n[*]"		
@@ -346,6 +349,39 @@ dumpsys () {
     echo "[*] dumpsys device_policy" && $SHELL_COMMAND dumpsys device_policy > "$DUMPSYS_DIR"/dumpsys_device_policy.txt
     echo "[*] dumpsys devicestoragemonitor" && $SHELL_COMMAND dumpsys devicestoragemonitor > "$DUMPSYS_DIR"/dumpsys_devicestoragemonitor.txt
 	echo "[*] dumpsys diskstats" && $SHELL_COMMAND dumpsys diskstats > "$DUMPSYS_DIR"/dumpsys_diskstats.txt 
+    
+    #Process dumpsys diskstats - See here https://android.stackexchange.com/questions/220442/obtaining-app-storage-details-via-adb
+    
+    F_PKG_NAMES="$DUMPSYS_DIR"/package_names.txt
+    F_PKG_SIZE="$DUMPSYS_DIR"/app_pkg_sizes.txt
+    F_DAT_SIZE="$DUMPSYS_DIR"/app_data_sizes.txt
+    F_CACHE_SIZE="$DUMPSYS_DIR"/app_cache_sizes.txt
+    F_OUTPUT="$DUMPSYS_DIR"/dumpsys_diskstats_ordered.txt
+    sed -n '/Package Names:/p' "$DUMPSYS_DIR"/dumpsys_diskstats.txt | sed -e 's/,/\n/g' -e 's/"//g' -e 's/.*\[//g' -e 's/\].*//g' > "$F_PKG_NAMES"
+    sed -n '/App Sizes:/p' "$DUMPSYS_DIR"/dumpsys_diskstats.txt | sed -e 's/,/\n/g' -e 's/.*\[//g' -e 's/\].*//g' > "$F_PKG_SIZE"
+    sed -n '/App Data Sizes:/p' "$DUMPSYS_DIR"/dumpsys_diskstats.txt | sed -e 's/,/\n/g' -e 's/.*\[//g' -e 's/\].*//g' > "$F_DAT_SIZE"
+    sed -n '/Cache Sizes:/p' "$DUMPSYS_DIR"/dumpsys_diskstats.txt | sed -e 's/,/\n/g' -e 's/.*\[//g' -e 's/\].*//g' > "$F_CACHE_SIZE"
+
+    # Printing package names and their sizes 
+    ttl_apps=$(wc -l < "$F_PKG_NAMES")
+    count=1
+    while [ $count -le $ttl_apps ]; do 
+        pkg=$(sed -n "${count}p" "$F_PKG_NAMES")
+        pkg_size=$(sed -n "${count}p" "$F_PKG_SIZE") 
+        dat_size=$(sed -n "${count}p" "$F_DAT_SIZE")
+        csh_size=$(sed -n "${count}p" "$F_CACHE_SIZE")
+        echo -e "Package Name: $pkg" >> "$F_OUTPUT"
+        echo -e "\t Package Size=$pkg_size bytes" >> "$F_OUTPUT"
+        echo -e "\t Data Size=$dat_size bytes" >> "$F_OUTPUT"
+        echo -e "\t Cache Size=$csh_size bytes" >> "$F_OUTPUT"
+        echo -e "\t Total Size=$(($pkg_size + $dat_size + $csh_size)) bytes\n" >> "$F_OUTPUT"
+    count=$(( $count + 1)); 
+    done
+    rm -f "$DUMPSYS_DIR"/package_names.txt
+    rm -f "$DUMPSYS_DIR"/app_pkg_sizes.txt
+    rm -f "$DUMPSYS_DIR"/app_data_sizes.txt
+    rm -f "$DUMPSYS_DIR"/app_cache_sizes.txt
+    
 	echo "[*] dumpsys display" && $SHELL_COMMAND dumpsys display > "$DUMPSYS_DIR"/dumpsys_display.txt
 	echo "[*] dumpsys dropbox" && $SHELL_COMMAND dumpsys dropbox > "$DUMPSYS_DIR"/dumpsys_dropbox.txt
 	echo "[*] dumpsys gfxinfo" && $SHELL_COMMAND dumpsys gfxinfo > "$DUMPSYS_DIR"/dumpsys_gfxinfo.txt
@@ -385,7 +421,15 @@ dumpsys () {
     echo "[*] dumpsys wallpaper" && $SHELL_COMMAND dumpsys wallpaper > "$DUMPSYS_DIR"/dumpsys_wallpaper.txt   
     echo "[*] dumpsys wifi" && $SHELL_COMMAND dumpsys wifi > "$DUMPSYS_DIR"/dumpsys_wifi.txt   
     echo "[*] dumpsys window" && $SHELL_COMMAND dumpsys window > "$DUMPSYS_DIR"/dumpsys_window.txt   
- 
+
+    #Extract appops for every package - See here https://android.stackexchange.com/questions/226282/how-can-i-see-which-applications-is-reading-the-clipboard
+    
+ 	mkdir -p "$DUMPSYS_DIR/appops"
+    for pkg in $( $SHELL_COMMAND pm list packages | sed 's/package://' )
+    do
+        echo "[*] appops get $pkg" && $SHELL_COMMAND appops get $pkg > "$DUMPSYS_DIR"/appops/appops_"$pkg".txt
+    done
+    
 	time_update
 	echo -e "[*]\n[*]"    
 	echo "[*] DUMPSYS acquisition completed at ${NOW}" | tee -a "$DUMPSYS_LOG_FILE"
@@ -467,7 +511,10 @@ apk () {
 	echo "[*] APK Acquisition started at ${NOW}" | tee "$APK_LOG_FILE"
 	echo -e "[*]\n[*]"  
 	echo "[*] Extracting APK list"
-	$SHELL_COMMAND pm list packages -f -u > ${APK_DIR}/${ANDROID_ID}_apk_list.txt
+
+
+    
+ 	$SHELL_COMMAND pm list packages -f -u > ${APK_DIR}/${ANDROID_ID}_apk_list.txt
 
 	SELECTED_FILE=${APK_DIR}/${ANDROID_ID}_apk_list.txt
 
@@ -713,7 +760,7 @@ menu () {
 	1 "Collect basic information" \
 	2 "Execute live commands" \
 	3 "Execute package manager commands" \
-	4 "Execute bugreport and dumpsys" \
+	4 "Execute bugreport,dumpsys,appops" \
 	5 "Acquire an ADB Backup" \
 	6 "Acquire /system folder" \
 	7 "Acquire /sdcard folder" \
