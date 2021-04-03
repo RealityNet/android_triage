@@ -29,3 +29,9 @@ First release
 - Added "-keyvalue" in the ADB backup commant (Thanks Yogesh Khatri - @SwiftForensics)
 - Added option 10 to dump file system folders and files not requiring root privileges
 - Minor fixes
+
+<b>Version 1.2 [3/4/2020]</b>
+
+- Added "dumpsys diskstats" processing (credits https://android.stackexchange.com/questions/220442/obtaining-app-storage-details-via-adb)
+- Added "appops" processing (credits https://android.stackexchange.com/questions/226282/how-can-i-see-which-applications-is-reading-the-clipboard)
+- Minor adds
