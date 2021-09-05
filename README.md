@@ -35,3 +35,11 @@ First release
 - Added "dumpsys diskstats" processing (credits https://android.stackexchange.com/questions/220442/obtaining-app-storage-details-via-adb)
 - Added "appops" processing (credits https://android.stackexchange.com/questions/226282/how-can-i-see-which-applications-is-reading-the-clipboard)
 - Minor adds
+
+<b>Version 1.3 [6/9/2020]</b>
+
+- Added "dumpsys notification --noredact" to extract notification text 
+- Added "dumpsys dbinfo -v"
+- Added "dumpsys bluetooth_manager | grep 'BOOT_COMPLETED\|AIRPLANE'" to extract boot and airplane mode information
+- Changed "dumpsys meminfo -a" with "dumpsys -t 60 meminfo -a"
+- Minor fixes
