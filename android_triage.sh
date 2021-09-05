@@ -2,7 +2,7 @@
 
 # android_triage
 # Mattia Epifani && Giovanni Rattaro
-# 20210403 V1.2
+# 20210906 V1.3
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ check_tools() {
 
 set_var () {
 	# generic var
-	VERSION="1.2 - 20210403"
+	VERSION="1.3 - 20210906"
 
 	# generic commands var
 	SHELL_COMMAND="${ADB} shell"
@@ -285,7 +285,14 @@ package_manager_commands () {
 	echo "[*] pm list packages -f -u" && $SHELL_COMMAND pm list packages -f -u > "$PM_DIR"/pm_list_packages-f-u.txt
 	echo "[*] pm list permissions -f" && $SHELL_COMMAND pm list permissions -f > "$PM_DIR"/pm_list_permissions-f.txt
 	echo "[*] cat /data/system/uiderrors.txt" && $SHELL_COMMAND cat /data/system/uiderrors.txt > "$PM_DIR"/uiderrors.txt
-	echo -e "[*]\n[*]"
+    
+    #mkdir -p "$PM_DIR/package_dump"
+    #for pkg in $( $SHELL_COMMAND pm list packages | sed 's/package://' )
+    #do
+    #    echo "[*] pm dump $pkg" && $SHELL_COMMAND pm dump $pkg > "$PM_DIR"/package_dump/"$pkg"_dump.txt
+    #done
+	#echo -e "[*]\n[*]"
+    
 	time_update
 	echo "[*] PACKAGE MANAGER Acquisition completed at ${NOW}" | tee -a $PM_LOG_FILE
     
@@ -340,12 +347,14 @@ dumpsys () {
 	echo "[*] dumpsys batteryproperties" && $SHELL_COMMAND dumpsys batteryproperties > "$DUMPSYS_DIR"/dumpsys_batteryproperties.txt 
 	echo "[*] dumpsys batterystats" && $SHELL_COMMAND dumpsys batterystats > "$DUMPSYS_DIR"/dumpsys_batterystats.txt
 	echo "[*] dumpsys bluetooth_manager" && $SHELL_COMMAND dumpsys bluetooth_manager > "$DUMPSYS_DIR"/dumpsys_bluetooth_manager.txt
-	echo "[*] dumpsys carrier_config" && $SHELL_COMMAND dumpsys carrier_config > "$DUMPSYS_DIR"/dumpsys_carrier_config.txt
+	echo "[*] dumpsys bluetooth_manager | grep 'BOOT_COMPLETED\|AIRPLANE'" && $SHELL_COMMAND dumpsys bluetooth_manager | grep 'BOOT_COMPLETED\|AIRPLANE' > "$DUMPSYS_DIR"/dumpsys_bluetooth_manager_boot.txt
+    echo "[*] dumpsys carrier_config" && $SHELL_COMMAND dumpsys carrier_config > "$DUMPSYS_DIR"/dumpsys_carrier_config.txt
  	echo "[*] dumpsys clipboard" && $SHELL_COMMAND dumpsys clipboard > "$DUMPSYS_DIR"/dumpsys_clipboard.txt 
 	echo "[*] dumpsys connectivity" && $SHELL_COMMAND dumpsys connectivity > "$DUMPSYS_DIR"/dumpsys_connectivity.txt
 	echo "[*] dumpsys content" && $SHELL_COMMAND dumpsys content > "$DUMPSYS_DIR"/dumpsys_content.txt
 	echo "[*] dumpsys cpuinfo" && $SHELL_COMMAND dumpsys cpuinfo > "$DUMPSYS_DIR"/dumpsys_cpuinfo.txt
 	echo "[*] dumpsys dbinfo" && $SHELL_COMMAND dumpsys dbinfo > "$DUMPSYS_DIR"/dumpsys_dbinfo.txt 
+    echo "[*] dumpsys dbinfo -v" && $SHELL_COMMAND dumpsys dbinfo -v > "$DUMPSYS_DIR"/dumpsys_dbinfo.txt 
     echo "[*] dumpsys device_policy" && $SHELL_COMMAND dumpsys device_policy > "$DUMPSYS_DIR"/dumpsys_device_policy.txt
     echo "[*] dumpsys devicestoragemonitor" && $SHELL_COMMAND dumpsys devicestoragemonitor > "$DUMPSYS_DIR"/dumpsys_devicestoragemonitor.txt
 	echo "[*] dumpsys diskstats" && $SHELL_COMMAND dumpsys diskstats > "$DUMPSYS_DIR"/dumpsys_diskstats.txt 
@@ -388,14 +397,14 @@ dumpsys () {
     echo "[*] dumpsys iphonesubinfo" && $SHELL_COMMAND dumpsys iphonesubinfo > "$DUMPSYS_DIR"/dumpsys_iphonesubinfo.txt
     echo "[*] dumpsys jobscheduler" && $SHELL_COMMAND dumpsys jobscheduler > "$DUMPSYS_DIR"/dumpsys_jobscheduler.txt
 	echo "[*] dumpsys location" && $SHELL_COMMAND dumpsys location > "$DUMPSYS_DIR"/dumpsys_location.txt 
-	echo "[*] dumpsys meminfo -a" && $SHELL_COMMAND dumpsys meminfo -a > "$DUMPSYS_DIR"/dumpsys_meminfo-a.txt
+	echo "[*] dumpsys -t 60 meminfo -a" && $SHELL_COMMAND dumpsys meminfo -t 60 -a > "$DUMPSYS_DIR"/dumpsys_meminfo-a.txt
 	echo "[*] dumpsys mount" && $SHELL_COMMAND dumpsys mount > "$DUMPSYS_DIR"/dumpsys_mount.txt
 	echo "[*] dumpsys netpolicy" && $SHELL_COMMAND dumpsys netpolicy > "$DUMPSYS_DIR"/dumpsys_netpolicy.txt
     echo "[*] dumpsys netstats" && $SHELL_COMMAND dumpsys netstats > "$DUMPSYS_DIR"/dumpsys_netstats.txt
 	echo "[*] dumpsys network_management" && $SHELL_COMMAND dumpsys network_management > "$DUMPSYS_DIR"/dumpsys_network_management.txt
 	echo "[*] dumpsys network_score" && $SHELL_COMMAND dumpsys network_score > "$DUMPSYS_DIR"/dumpsys_network_score.txt
 	echo "[*] dumpsys notification" && $SHELL_COMMAND dumpsys notification > "$DUMPSYS_DIR"/dumpsys_notification.txt
-	echo "[*] dumpsys package" && $SHELL_COMMAND dumpsys package > "$DUMPSYS_DIR"/dumpsys_package.txt
+	echo "[*] dumpsys notification --noredact" && $SHELL_COMMAND dumpsys notification > "$DUMPSYS_DIR"/dumpsys_notification_noredact.txt
 	echo "[*] dumpsys password_policy" && $SHELL_COMMAND dumpsys password_policy > "$DUMPSYS_DIR"/dumpsys_password_policy.txt
     echo "[*] dumpsys permission" && $SHELL_COMMAND dumpsys permission > "$DUMPSYS_DIR"/dumpsys_permission.txt
 	echo "[*] dumpsys phone" && $SHELL_COMMAND dumpsys phone > "$DUMPSYS_DIR"/dumpsys_phone.txt 
@@ -413,7 +422,7 @@ dumpsys () {
 	echo "[*] dumpsys statusbar" && $SHELL_COMMAND dumpsys statusbar > "$DUMPSYS_DIR"/dumpsys_statusbar.txt 
     echo "[*] dumpsys storaged" && $SHELL_COMMAND dumpsys storaged > "$DUMPSYS_DIR"/dumpsys_storaged.txt 
 	echo "[*] dumpsys telecom" && $SHELL_COMMAND dumpsys telecom > "$DUMPSYS_DIR"/dumpsys_telecom.txt 
-	echo "[*] dumpsys usagestats" && $SHELL_COMMAND dumpsys usagestats > "$DUMPSYS_DIR"/dumpsys_usagestats.txt
+    echo "[*] dumpsys usagestats" && $SHELL_COMMAND dumpsys usagestats > "$DUMPSYS_DIR"/dumpsys_usagestats.txt 
 	echo "[*] dumpsys user" && $SHELL_COMMAND dumpsys user > "$DUMPSYS_DIR"/dumpsys_user.txt 
 	echo "[*] dumpsys usb" && $SHELL_COMMAND dumpsys usb > "$DUMPSYS_DIR"/dumpsys_usb.txt 
 	echo "[*] dumpsys vibrator" && $SHELL_COMMAND dumpsys vibrator > "$DUMPSYS_DIR"/dumpsys_vibrator.txt 
@@ -424,10 +433,10 @@ dumpsys () {
 
     #Extract appops for every package - See here https://android.stackexchange.com/questions/226282/how-can-i-see-which-applications-is-reading-the-clipboard
     
- 	mkdir -p "$DUMPSYS_DIR/appops"
+    mkdir -p "$DUMPSYS_DIR/appops"
     for pkg in $( $SHELL_COMMAND pm list packages | sed 's/package://' )
     do
-        echo "[*] appops get $pkg" && $SHELL_COMMAND appops get $pkg > "$DUMPSYS_DIR"/appops/appops_"$pkg".txt
+        echo "[*] appops get $pkg" && $SHELL_COMMAND appops get $pkg > "$DUMPSYS_DIR"/appops/"$pkg"_appops.txt
     done
     
 	time_update
@@ -512,8 +521,6 @@ apk () {
 	echo -e "[*]\n[*]"  
 	echo "[*] Extracting APK list"
 
-
-    
  	$SHELL_COMMAND pm list packages -f -u > ${APK_DIR}/${ANDROID_ID}_apk_list.txt
 
 	SELECTED_FILE=${APK_DIR}/${ANDROID_ID}_apk_list.txt
@@ -637,6 +644,8 @@ content_provider () {
 	echo "[*] Content Provider Acquisition started at ${NOW}" | tee "$CONTENTPROVIDER_LOG_FILE"
 	echo -e "[*]\n[*]"  
 	echo "[*] Extracting Content Provider data"
+    
+    ${SHELL_COMMAND} dumpsys package providers > ${CONTENTPROVIDER_DIR}/content_providers_list.txt
 
 	echo "[*] QUERY CALENDAR CONTENT"
 	${SHELL_COMMAND} content query --uri content://com.android.calendar/calendar_entities > ${CONTENTPROVIDER_DIR}/calendar_calendar_entities.txt
