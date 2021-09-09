@@ -405,8 +405,8 @@ dumpsys () {
 	echo "[*] dumpsys network_score" && $SHELL_COMMAND dumpsys network_score > "$DUMPSYS_DIR"/dumpsys_network_score.txt
 	echo "[*] dumpsys notification" && $SHELL_COMMAND dumpsys notification > "$DUMPSYS_DIR"/dumpsys_notification.txt
 	echo "[*] dumpsys notification --noredact" && $SHELL_COMMAND dumpsys notification > "$DUMPSYS_DIR"/dumpsys_notification_noredact.txt
-	echo "[*] dumpsys package" && $SHELL_COMMAND dumpsys package > "$DUMPSYS_DIR"/dumpsys_password_policy.txt
-    echo "[*] dumpsys password_policy" && $SHELL_COMMAND dumpsys password_policy > "$DUMPSYS_DIR"/dumpsys_package.txt
+	echo "[*] dumpsys package" && $SHELL_COMMAND dumpsys package > "$DUMPSYS_DIR"/dumpsys_package.txt
+    echo "[*] dumpsys password_policy" && $SHELL_COMMAND dumpsys password_policy > "$DUMPSYS_DIR"/dumpsys_password_policy.txt
     echo "[*] dumpsys permission" && $SHELL_COMMAND dumpsys permission > "$DUMPSYS_DIR"/dumpsys_permission.txt
 	echo "[*] dumpsys phone" && $SHELL_COMMAND dumpsys phone > "$DUMPSYS_DIR"/dumpsys_phone.txt 
 	echo "[*] dumpsys power" && $SHELL_COMMAND dumpsys power > "$DUMPSYS_DIR"/dumpsys_power.txt 
