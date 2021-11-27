@@ -495,11 +495,11 @@ adb_backup () {
 	mkdir -p "$BACKUP_DIR"
 	echo -e "[*]\n[*]"
 	echo "[*] This option creates an Android Backup by using the command" 
-	echo "[*] adb backup -all -shared -system -keyvalue -apk -f backup.ab"
+	echo "[*] adb backup -all -shared -system -keyvalue -obb -apk -f backup.ab"
 	echo -e "[*]\n[*]"    
 	echo "[*] ADB Backup started at ${NOW}" | tee -a "$BACKUP_DIR"/backup_log.txt
 	echo -e "[*]\n[*]"      
-	echo "[*] Executing 'adb backup -all -shared -system -keyvalue -apk  -f backup.ab'" 
+	echo "[*] Executing 'adb backup -all -shared -system -keyvalue -obb -apk  -f backup.ab'" 
 	$BACKUP_COMMAND -all -shared -system -keyvalue -apk -f "$BACKUP_DIR"/backup.ab
 	echo -e "[*]\n[*]" 
 	time_update	
