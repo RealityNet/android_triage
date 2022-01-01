@@ -2,7 +2,7 @@
 
 # android_triage
 # Mattia Epifani && Giovanni Rattaro
-# 20210906 V1.3
+# 20220101 V1.4
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ check_tools() {
 
 set_var () {
 	# generic var
-	VERSION="1.3 - 20210906"
+	VERSION="1.4 - 20220101"
 
 	# generic commands var
 	SHELL_COMMAND="${ADB} shell"
