@@ -17,6 +17,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+# SPECIAL THANKS
+#
+# ydkhatri for adding -keyvalue to the adb backups
+#
+# upintheairsheep for adding -obb to the adb backups and adding this special thanks section
+#
+#
 #####################################################################
 # MANDATORY REQUIREMENTS
 #####################################################################
