@@ -98,29 +98,30 @@ First release
 
 <b>Option 2 - Execute live commands</b>
 
-- adb shellid
-- adb shelluname -a
-- adb shellcat /proc/version
-- adb shelluptime
-- adb shellprintenv
-- adb shellcat /proc/partitions
-- adb shellcat /proc/cpuinfo
-- adb shellcat /proc/diskstats
-- adb shelldf
-- adb shelldf -ah
-- adb shellmount
-- adb shellip address show wlan0
-- adb shellifconfig -a
-- adb shellnetstat -an
-- adb shelllsof
-- adb shellps -ef
-- adb shelltop -n 1
-- adb shellcat /proc/sched_debug
-- adb shellvmstat
-- adb shellsysctl -a
-- adb shellime list
-- adb shellservice list
-- adb shelllogcat -S -b all
-- adb shelllogcat -d -b all V:*
+- adb shell id
+- adb shell uname -a
+- adb shell cat /proc/version
+- adb shell uptime
+- adb shell printenv
+- adb shell cat /proc/partitions
+- adb shell cat /proc/cpuinfo
+- adb shell cat /proc/diskstats
+- adb shell df
+- adb shell df -ah
+- adb shell mount
+- adb shell ip address show wlan0
+- adb shell ifconfig -a
+- adb shell netstat -an
+- adb shell lsof
+- adb shell ps -ef
+- adb shell top -n 1
+- adb shell cat /proc/sched_debug
+- adb shell vmstat
+- adb shell sysctl -a
+- adb shell ime list
+- adb shell service list
+- adb shell logcat -S -b all
+- adb shell logcat -d -b all V:*
+
 
 
