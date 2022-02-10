@@ -2,7 +2,7 @@
 
 # android_triage
 # Mattia Epifani && Giovanni Rattaro
-# 20210906 V1.3
+# 20220210 V1.4
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,6 +25,25 @@
 # - dialog
 #
 #####################################################################
+# REFERENCES
+#####################################################################
+#
+# - Android Live Info by Magpol
+#   https://github.com/Magpol/AndroidLiveInfo
+# - Foroboto by Chapin Bryce
+#   https://github.com/chapinb/foroboto
+# - ADB-Export by sromku
+#   https://github.com/sromku/adb-export
+#
+#####################################################################
+# SPECIAL THANKS
+#####################################################################
+#
+# - ydkhatri for adding -keyvalue to the adb backups
+# - upintheairsheep for adding -obb to the adb backups
+# - haxom for suggesting a fix
+#
+#####################################################################
 
 time_update () { NOW=$(date +"%Y%m%d_%H_%M_%S"); }
 
@@ -44,7 +63,7 @@ check_tools() {
 
 set_var () {
 	# generic var
-	VERSION="1.3 - 20210906"
+	VERSION="1.4 - 20220210"
 
 	# generic commands var
 	SHELL_COMMAND="${ADB} shell"
@@ -286,11 +305,11 @@ package_manager_commands () {
 	echo "[*] pm list permissions -f" && $SHELL_COMMAND pm list permissions -f > "$PM_DIR"/pm_list_permissions-f.txt
 	echo "[*] cat /data/system/uiderrors.txt" && $SHELL_COMMAND cat /data/system/uiderrors.txt > "$PM_DIR"/uiderrors.txt
     
-    #mkdir -p "$PM_DIR/package_dump"
-    #for pkg in $( $SHELL_COMMAND pm list packages | sed 's/package://' )
-    #do
-    #    echo "[*] pm dump $pkg" && $SHELL_COMMAND pm dump $pkg > "$PM_DIR"/package_dump/"$pkg"_dump.txt
-    #done
+    	#mkdir -p "$PM_DIR/package_dump"
+   	#for pkg in $( $SHELL_COMMAND pm list packages | sed 's/package://' )
+    	#do
+    	#echo "[*] pm dump $pkg" && $SHELL_COMMAND pm dump $pkg > "$PM_DIR"/package_dump/"$pkg"_dump.txt
+    	#done
 	#echo -e "[*]\n[*]"
     
 	time_update
@@ -334,11 +353,11 @@ dumpsys () {
 	echo -e "[*]\n[*]"		
 	echo -e "[*]\n[*]"  
 	echo "[*] Executing bugreport and dumpsys commands"
-    echo "[*] bugreport" && $BUGREPORT_COMMAND "$DUMPSYS_DIR"/bugreport.zip
+    	echo "[*] bugreport" && $BUGREPORT_COMMAND "$DUMPSYS_DIR"/bugreport.zip
 	echo "[*] dumpsys" && $SHELL_COMMAND dumpsys > "$DUMPSYS_DIR"/dumpsys.txt
 	echo "[*] dumpsys account" && $SHELL_COMMAND dumpsys account > "$DUMPSYS_DIR"/dumpsys_account.txt 
-    echo "[*] dumpsys activity" && $SHELL_COMMAND dumpsys activity > "$DUMPSYS_DIR"/dumpsys_activity.txt
-    echo "[*] dumpsys alarm" && $SHELL_COMMAND dumpsys alarm > "$DUMPSYS_DIR"/dumpsys_alarm.txt  
+    	echo "[*] dumpsys activity" && $SHELL_COMMAND dumpsys activity > "$DUMPSYS_DIR"/dumpsys_activity.txt
+   	echo "[*] dumpsys alarm" && $SHELL_COMMAND dumpsys alarm > "$DUMPSYS_DIR"/dumpsys_alarm.txt  
 	echo "[*] dumpsys appops" && $SHELL_COMMAND dumpsys appops > "$DUMPSYS_DIR"/dumpsys_appops.txt  
 	echo "[*] dumpsys audio" && $SHELL_COMMAND dumpsys audio > "$DUMPSYS_DIR"/dumpsys_audio.txt  
  	echo "[*] dumpsys autofill" && $SHELL_COMMAND dumpsys autofill > "$DUMPSYS_DIR"/dumpsys_autofill.txt  
@@ -348,66 +367,66 @@ dumpsys () {
 	echo "[*] dumpsys batterystats" && $SHELL_COMMAND dumpsys batterystats > "$DUMPSYS_DIR"/dumpsys_batterystats.txt
 	echo "[*] dumpsys bluetooth_manager" && $SHELL_COMMAND dumpsys bluetooth_manager > "$DUMPSYS_DIR"/dumpsys_bluetooth_manager.txt
 	echo "[*] dumpsys bluetooth_manager | grep 'BOOT_COMPLETED\|AIRPLANE'" && $SHELL_COMMAND dumpsys bluetooth_manager | grep 'BOOT_COMPLETED\|AIRPLANE' > "$DUMPSYS_DIR"/dumpsys_bluetooth_manager_boot.txt
-    echo "[*] dumpsys carrier_config" && $SHELL_COMMAND dumpsys carrier_config > "$DUMPSYS_DIR"/dumpsys_carrier_config.txt
+    	echo "[*] dumpsys carrier_config" && $SHELL_COMMAND dumpsys carrier_config > "$DUMPSYS_DIR"/dumpsys_carrier_config.txt
  	echo "[*] dumpsys clipboard" && $SHELL_COMMAND dumpsys clipboard > "$DUMPSYS_DIR"/dumpsys_clipboard.txt 
 	echo "[*] dumpsys connectivity" && $SHELL_COMMAND dumpsys connectivity > "$DUMPSYS_DIR"/dumpsys_connectivity.txt
 	echo "[*] dumpsys content" && $SHELL_COMMAND dumpsys content > "$DUMPSYS_DIR"/dumpsys_content.txt
 	echo "[*] dumpsys cpuinfo" && $SHELL_COMMAND dumpsys cpuinfo > "$DUMPSYS_DIR"/dumpsys_cpuinfo.txt
 	echo "[*] dumpsys dbinfo" && $SHELL_COMMAND dumpsys dbinfo > "$DUMPSYS_DIR"/dumpsys_dbinfo.txt 
-    echo "[*] dumpsys dbinfo -v" && $SHELL_COMMAND dumpsys dbinfo -v > "$DUMPSYS_DIR"/dumpsys_dbinfo.txt 
-    echo "[*] dumpsys device_policy" && $SHELL_COMMAND dumpsys device_policy > "$DUMPSYS_DIR"/dumpsys_device_policy.txt
-    echo "[*] dumpsys devicestoragemonitor" && $SHELL_COMMAND dumpsys devicestoragemonitor > "$DUMPSYS_DIR"/dumpsys_devicestoragemonitor.txt
+    	echo "[*] dumpsys dbinfo -v" && $SHELL_COMMAND dumpsys dbinfo -v > "$DUMPSYS_DIR"/dumpsys_dbinfo.txt 
+    	echo "[*] dumpsys device_policy" && $SHELL_COMMAND dumpsys device_policy > "$DUMPSYS_DIR"/dumpsys_device_policy.txt
+    	echo "[*] dumpsys devicestoragemonitor" && $SHELL_COMMAND dumpsys devicestoragemonitor > "$DUMPSYS_DIR"/dumpsys_devicestoragemonitor.txt
 	echo "[*] dumpsys diskstats" && $SHELL_COMMAND dumpsys diskstats > "$DUMPSYS_DIR"/dumpsys_diskstats.txt 
     
-    #Process dumpsys diskstats - See here https://android.stackexchange.com/questions/220442/obtaining-app-storage-details-via-adb
+    	#Process dumpsys diskstats - See here https://android.stackexchange.com/questions/220442/obtaining-app-storage-details-via-adb
     
-    F_PKG_NAMES="$DUMPSYS_DIR"/package_names.txt
-    F_PKG_SIZE="$DUMPSYS_DIR"/app_pkg_sizes.txt
-    F_DAT_SIZE="$DUMPSYS_DIR"/app_data_sizes.txt
-    F_CACHE_SIZE="$DUMPSYS_DIR"/app_cache_sizes.txt
-    F_OUTPUT="$DUMPSYS_DIR"/dumpsys_diskstats_ordered.txt
-    sed -n '/Package Names:/p' "$DUMPSYS_DIR"/dumpsys_diskstats.txt | sed -e 's/,/\n/g' -e 's/"//g' -e 's/.*\[//g' -e 's/\].*//g' > "$F_PKG_NAMES"
-    sed -n '/App Sizes:/p' "$DUMPSYS_DIR"/dumpsys_diskstats.txt | sed -e 's/,/\n/g' -e 's/.*\[//g' -e 's/\].*//g' > "$F_PKG_SIZE"
-    sed -n '/App Data Sizes:/p' "$DUMPSYS_DIR"/dumpsys_diskstats.txt | sed -e 's/,/\n/g' -e 's/.*\[//g' -e 's/\].*//g' > "$F_DAT_SIZE"
-    sed -n '/Cache Sizes:/p' "$DUMPSYS_DIR"/dumpsys_diskstats.txt | sed -e 's/,/\n/g' -e 's/.*\[//g' -e 's/\].*//g' > "$F_CACHE_SIZE"
+    	F_PKG_NAMES="$DUMPSYS_DIR"/package_names.txt
+    	F_PKG_SIZE="$DUMPSYS_DIR"/app_pkg_sizes.txt
+    	F_DAT_SIZE="$DUMPSYS_DIR"/app_data_sizes.txt
+    	F_CACHE_SIZE="$DUMPSYS_DIR"/app_cache_sizes.txt
+    	F_OUTPUT="$DUMPSYS_DIR"/dumpsys_diskstats_ordered.txt
+    	sed -n '/Package Names:/p' "$DUMPSYS_DIR"/dumpsys_diskstats.txt | sed -e 's/,/\n/g' -e 's/"//g' -e 's/.*\[//g' -e 's/\].*//g' > "$F_PKG_NAMES"
+    	sed -n '/App Sizes:/p' "$DUMPSYS_DIR"/dumpsys_diskstats.txt | sed -e 's/,/\n/g' -e 's/.*\[//g' -e 's/\].*//g' > "$F_PKG_SIZE"
+    	sed -n '/App Data Sizes:/p' "$DUMPSYS_DIR"/dumpsys_diskstats.txt | sed -e 's/,/\n/g' -e 's/.*\[//g' -e 's/\].*//g' > "$F_DAT_SIZE"
+    	sed -n '/Cache Sizes:/p' "$DUMPSYS_DIR"/dumpsys_diskstats.txt | sed -e 's/,/\n/g' -e 's/.*\[//g' -e 's/\].*//g' > "$F_CACHE_SIZE"
 
-    # Printing package names and their sizes 
-    ttl_apps=$(wc -l < "$F_PKG_NAMES")
-    count=1
-    while [ $count -le $ttl_apps ]; do 
-        pkg=$(sed -n "${count}p" "$F_PKG_NAMES")
-        pkg_size=$(sed -n "${count}p" "$F_PKG_SIZE") 
-        dat_size=$(sed -n "${count}p" "$F_DAT_SIZE")
-        csh_size=$(sed -n "${count}p" "$F_CACHE_SIZE")
-        echo -e "Package Name: $pkg" >> "$F_OUTPUT"
-        echo -e "\t Package Size=$pkg_size bytes" >> "$F_OUTPUT"
-        echo -e "\t Data Size=$dat_size bytes" >> "$F_OUTPUT"
-        echo -e "\t Cache Size=$csh_size bytes" >> "$F_OUTPUT"
-        echo -e "\t Total Size=$(($pkg_size + $dat_size + $csh_size)) bytes\n" >> "$F_OUTPUT"
-    count=$(( $count + 1)); 
-    done
-    rm -f "$DUMPSYS_DIR"/package_names.txt
-    rm -f "$DUMPSYS_DIR"/app_pkg_sizes.txt
-    rm -f "$DUMPSYS_DIR"/app_data_sizes.txt
-    rm -f "$DUMPSYS_DIR"/app_cache_sizes.txt
+    	# Printing package names and their sizes 
+    	ttl_apps=$(wc -l < "$F_PKG_NAMES")
+    	count=1
+    	while [ $count -le $ttl_apps ]; do 
+        	pkg=$(sed -n "${count}p" "$F_PKG_NAMES")
+        	pkg_size=$(sed -n "${count}p" "$F_PKG_SIZE") 
+        	dat_size=$(sed -n "${count}p" "$F_DAT_SIZE")
+        	csh_size=$(sed -n "${count}p" "$F_CACHE_SIZE")
+        	echo -e "Package Name: $pkg" >> "$F_OUTPUT"
+        	echo -e "\t Package Size=$pkg_size bytes" >> "$F_OUTPUT"
+        	echo -e "\t Data Size=$dat_size bytes" >> "$F_OUTPUT"
+        	echo -e "\t Cache Size=$csh_size bytes" >> "$F_OUTPUT"
+        	echo -e "\t Total Size=$(($pkg_size + $dat_size + $csh_size)) bytes\n" >> "$F_OUTPUT"
+    	count=$(( $count + 1)); 
+    	done
+    	rm -f "$DUMPSYS_DIR"/package_names.txt
+    	rm -f "$DUMPSYS_DIR"/app_pkg_sizes.txt
+    	rm -f "$DUMPSYS_DIR"/app_data_sizes.txt
+    	rm -f "$DUMPSYS_DIR"/app_cache_sizes.txt
     
 	echo "[*] dumpsys display" && $SHELL_COMMAND dumpsys display > "$DUMPSYS_DIR"/dumpsys_display.txt
 	echo "[*] dumpsys dropbox" && $SHELL_COMMAND dumpsys dropbox > "$DUMPSYS_DIR"/dumpsys_dropbox.txt
 	echo "[*] dumpsys gfxinfo" && $SHELL_COMMAND dumpsys gfxinfo > "$DUMPSYS_DIR"/dumpsys_gfxinfo.txt
-    echo "[*] dumpsys iphonesubinfo" && $SHELL_COMMAND dumpsys iphonesubinfo > "$DUMPSYS_DIR"/dumpsys_iphonesubinfo.txt
-    echo "[*] dumpsys jobscheduler" && $SHELL_COMMAND dumpsys jobscheduler > "$DUMPSYS_DIR"/dumpsys_jobscheduler.txt
+   	echo "[*] dumpsys iphonesubinfo" && $SHELL_COMMAND dumpsys iphonesubinfo > "$DUMPSYS_DIR"/dumpsys_iphonesubinfo.txt
+    	echo "[*] dumpsys jobscheduler" && $SHELL_COMMAND dumpsys jobscheduler > "$DUMPSYS_DIR"/dumpsys_jobscheduler.txt
 	echo "[*] dumpsys location" && $SHELL_COMMAND dumpsys location > "$DUMPSYS_DIR"/dumpsys_location.txt 
-	echo "[*] dumpsys -t 60 meminfo -a" && $SHELL_COMMAND dumpsys meminfo -t 60 -a > "$DUMPSYS_DIR"/dumpsys_meminfo-a.txt
+	echo "[*] dumpsys meminfo -t 60 -a" && $SHELL_COMMAND dumpsys meminfo -t 60 -a > "$DUMPSYS_DIR"/dumpsys_meminfo-a.txt
 	echo "[*] dumpsys mount" && $SHELL_COMMAND dumpsys mount > "$DUMPSYS_DIR"/dumpsys_mount.txt
 	echo "[*] dumpsys netpolicy" && $SHELL_COMMAND dumpsys netpolicy > "$DUMPSYS_DIR"/dumpsys_netpolicy.txt
-    echo "[*] dumpsys netstats" && $SHELL_COMMAND dumpsys netstats > "$DUMPSYS_DIR"/dumpsys_netstats.txt
+    	echo "[*] dumpsys netstats" && $SHELL_COMMAND dumpsys netstats > "$DUMPSYS_DIR"/dumpsys_netstats.txt
 	echo "[*] dumpsys network_management" && $SHELL_COMMAND dumpsys network_management > "$DUMPSYS_DIR"/dumpsys_network_management.txt
 	echo "[*] dumpsys network_score" && $SHELL_COMMAND dumpsys network_score > "$DUMPSYS_DIR"/dumpsys_network_score.txt
 	echo "[*] dumpsys notification" && $SHELL_COMMAND dumpsys notification > "$DUMPSYS_DIR"/dumpsys_notification.txt
-	echo "[*] dumpsys notification --noredact" && $SHELL_COMMAND dumpsys notification > "$DUMPSYS_DIR"/dumpsys_notification_noredact.txt
-	echo "[*] dumpsys package" && $SHELL_COMMAND dumpsys package > "$DUMPSYS_DIR"/dumpsys_password_policy.txt
-    echo "[*] dumpsys password_policy" && $SHELL_COMMAND dumpsys password_policy > "$DUMPSYS_DIR"/dumpsys_package.txt
-    echo "[*] dumpsys permission" && $SHELL_COMMAND dumpsys permission > "$DUMPSYS_DIR"/dumpsys_permission.txt
+	echo "[*] dumpsys notification --noredact" && $SHELL_COMMAND dumpsys notification --noredact > "$DUMPSYS_DIR"/dumpsys_notification_noredact.txt
+	echo "[*] dumpsys package" && $SHELL_COMMAND dumpsys package > "$DUMPSYS_DIR"/dumpsys_package.txt
+    	echo "[*] dumpsys password_policy" && $SHELL_COMMAND dumpsys password_policy > "$DUMPSYS_DIR"/dumpsys_password_policy.txt
+    	echo "[*] dumpsys permission" && $SHELL_COMMAND dumpsys permission > "$DUMPSYS_DIR"/dumpsys_permission.txt
 	echo "[*] dumpsys phone" && $SHELL_COMMAND dumpsys phone > "$DUMPSYS_DIR"/dumpsys_phone.txt 
 	echo "[*] dumpsys power" && $SHELL_COMMAND dumpsys power > "$DUMPSYS_DIR"/dumpsys_power.txt 
   	echo "[*] dumpsys procstats --full-details" && $SHELL_COMMAND dumpsys procstats --full-details > "$DUMPSYS_DIR"/dumpsys_procstats--full-details.txt 
@@ -421,24 +440,24 @@ dumpsys () {
 	echo "[*] dumpsys shortcut" && $SHELL_COMMAND dumpsys shortcut > "$DUMPSYS_DIR"/dumpsys_shortcut.txt 
 	echo "[*] dumpsys stats" && $SHELL_COMMAND dumpsys stats > "$DUMPSYS_DIR"/dumpsys_stats.txt 
 	echo "[*] dumpsys statusbar" && $SHELL_COMMAND dumpsys statusbar > "$DUMPSYS_DIR"/dumpsys_statusbar.txt 
-    echo "[*] dumpsys storaged" && $SHELL_COMMAND dumpsys storaged > "$DUMPSYS_DIR"/dumpsys_storaged.txt 
+    	echo "[*] dumpsys storaged" && $SHELL_COMMAND dumpsys storaged > "$DUMPSYS_DIR"/dumpsys_storaged.txt 
 	echo "[*] dumpsys telecom" && $SHELL_COMMAND dumpsys telecom > "$DUMPSYS_DIR"/dumpsys_telecom.txt 
-    echo "[*] dumpsys usagestats" && $SHELL_COMMAND dumpsys usagestats > "$DUMPSYS_DIR"/dumpsys_usagestats.txt 
+    	echo "[*] dumpsys usagestats" && $SHELL_COMMAND dumpsys usagestats > "$DUMPSYS_DIR"/dumpsys_usagestats.txt 
 	echo "[*] dumpsys user" && $SHELL_COMMAND dumpsys user > "$DUMPSYS_DIR"/dumpsys_user.txt 
 	echo "[*] dumpsys usb" && $SHELL_COMMAND dumpsys usb > "$DUMPSYS_DIR"/dumpsys_usb.txt 
 	echo "[*] dumpsys vibrator" && $SHELL_COMMAND dumpsys vibrator > "$DUMPSYS_DIR"/dumpsys_vibrator.txt 
 	echo "[*] dumpsys voip" && $SHELL_COMMAND dumpsys voip > "$DUMPSYS_DIR"/dumpsys_voip.txt 
-    echo "[*] dumpsys wallpaper" && $SHELL_COMMAND dumpsys wallpaper > "$DUMPSYS_DIR"/dumpsys_wallpaper.txt   
-    echo "[*] dumpsys wifi" && $SHELL_COMMAND dumpsys wifi > "$DUMPSYS_DIR"/dumpsys_wifi.txt   
-    echo "[*] dumpsys window" && $SHELL_COMMAND dumpsys window > "$DUMPSYS_DIR"/dumpsys_window.txt   
+    	echo "[*] dumpsys wallpaper" && $SHELL_COMMAND dumpsys wallpaper > "$DUMPSYS_DIR"/dumpsys_wallpaper.txt   
+    	echo "[*] dumpsys wifi" && $SHELL_COMMAND dumpsys wifi > "$DUMPSYS_DIR"/dumpsys_wifi.txt   
+    	echo "[*] dumpsys window" && $SHELL_COMMAND dumpsys window > "$DUMPSYS_DIR"/dumpsys_window.txt   
 
-    #Extract appops for every package - See here https://android.stackexchange.com/questions/226282/how-can-i-see-which-applications-is-reading-the-clipboard
+    	#Extract appops for every package - See here https://android.stackexchange.com/questions/226282/how-can-i-see-which-applications-is-reading-the-clipboard
     
-    mkdir -p "$DUMPSYS_DIR/appops"
-    for pkg in $( $SHELL_COMMAND pm list packages | sed 's/package://' )
-    do
-        echo "[*] appops get $pkg" && $SHELL_COMMAND appops get $pkg > "$DUMPSYS_DIR"/appops/"$pkg"_appops.txt
-    done
+    	mkdir -p "$DUMPSYS_DIR/appops"
+    	for pkg in $( $SHELL_COMMAND pm list packages | sed 's/package://' )
+    	do
+        	echo "[*] appops get $pkg" && $SHELL_COMMAND appops get $pkg > "$DUMPSYS_DIR"/appops/"$pkg"_appops.txt
+    	done
     
 	time_update
 	echo -e "[*]\n[*]"    
@@ -459,6 +478,7 @@ system () {
 	echo -e "[*]\n[*]"        
 	mkdir -p ${SYSTEM_DIR}/system
 	$PULL_COMMAND /system/ ${SYSTEM_DIR}/ >> "$SYSTEM_LOG_FILE"
+	echo "[*] /system/apex" && $PULL_COMMAND /system/apex ${SYSTEM_DIR}/system >> "$SYSTEM_LOG_FILE"
 	echo "[*] /system/app" && $PULL_COMMAND /system/app ${SYSTEM_DIR}/system >> "$SYSTEM_LOG_FILE"
 	echo "[*] /system/bin" && $PULL_COMMAND /system/bin ${SYSTEM_DIR}/system >> "$SYSTEM_LOG_FILE"
 	echo "[*] /system/cameradata" && $PULL_COMMAND /system/cameradata ${SYSTEM_DIR}/system >> "$SYSTEM_LOG_FILE"
@@ -495,12 +515,12 @@ adb_backup () {
 	mkdir -p "$BACKUP_DIR"
 	echo -e "[*]\n[*]"
 	echo "[*] This option creates an Android Backup by using the command" 
-	echo "[*] adb backup -all -shared -system -keyvalue -apk -f backup.ab"
+	echo "[*] adb backup -all -shared -system -keyvalue -apk -obb -f backup.ab"
 	echo -e "[*]\n[*]"    
 	echo "[*] ADB Backup started at ${NOW}" | tee -a "$BACKUP_DIR"/backup_log.txt
 	echo -e "[*]\n[*]"      
-	echo "[*] Executing 'adb backup -all -shared -system -keyvalue -apk  -f backup.ab'" 
-	$BACKUP_COMMAND -all -shared -system -keyvalue -apk -f "$BACKUP_DIR"/backup.ab
+	echo "[*] Executing 'adb backup -all -shared -system -keyvalue -apk -obb -f backup.ab'" 
+	$BACKUP_COMMAND -all -shared -system -keyvalue -apk -obb -f "$BACKUP_DIR"/backup.ab
 	echo -e "[*]\n[*]" 
 	time_update	
 	echo "[*] ADB Backup completed at ${NOW}" | tee -a "$BACKUP_DIR"/backup_log.txt
@@ -526,7 +546,7 @@ apk () {
 
 	SELECTED_FILE=${APK_DIR}/${ANDROID_ID}_apk_list.txt
 
-	echo "[*] Pulling APK files"
+	echo "[*] Pulling /data/app/"
 	while read -r line
 	do
 		line=${line#"package:"}
@@ -538,10 +558,11 @@ apk () {
 		app_path=${tokens[3]}
 		apk_name=${tokens[4]}
 
-		if [[ ${apk_type} != "system" ]]; then
+		if [ ${apk_type} == "data" ]; then
 		    mkdir -p ${APK_DIR}/${apk_type}/${app_folder}/${app_path}
-		    $PULL_COMMAND $target_file ${APK_DIR}/${apk_type}/${app_folder}/${app_path}/${apk_name}
+		    $PULL_COMMAND ${apk_type}/${app_folder}/${app_path}/ ${APK_DIR}/${apk_type}/${app_folder}/
 		fi
+
 	continue
 	done < "$SELECTED_FILE"    
 
@@ -550,12 +571,12 @@ apk () {
     
 	echo -e "[*]\n[*]" 
 	time_update
-	echo "[*] APK Acquisition completed at ${NOW}" | tee -a "$APK_LOG_FILE"
+	echo "[*] /data/app/ Acquisition completed at ${NOW}" | tee -a "$APK_LOG_FILE"
 	echo -e "[*]\n[*]" 
 	echo "[*] sha1sum of ${APK_DIR}/data_apks.tar in progress" | tee -a "$APK_LOG_FILE"
 	shasum "${APK_DIR}"/data_apks.tar | tee -a "$APK_LOG_FILE"
 
-	clear && dialog --title "android triage" --msgbox "APK Acquisition completed at ${NOW}" 6 40
+	clear && dialog --title "android triage" --msgbox "/data/app/ Acquisition completed at ${NOW}" 6 40
 	menu
 }
 
@@ -568,9 +589,9 @@ all () {
 	echo "[*] Data Acquisition started at ${NOW}" | tee "$ALL_LOG_FILE"
 	echo -e "[*]\n[*]"  
     
-    mkdir -p ${ALL_DIR}/filesystem
+    	mkdir -p ${ALL_DIR}/filesystem
     
-	echo "[*] Extracting APK from /data/ and /vendor/"
+	echo "[*] Extracting /data/app/"
 	$SHELL_COMMAND pm list packages -f -u > ${ALL_DIR}/${ANDROID_ID}_apk_list.txt
 
 	SELECTED_FILE=${ALL_DIR}/${ANDROID_ID}_apk_list.txt
@@ -587,9 +608,9 @@ all () {
 		app_path=${tokens[3]}
 		apk_name=${tokens[4]}
 
-		if [[ ${apk_type} != "system" ]]; then
+		if [ ${apk_type} == "data" ]; then
 		    mkdir -p ${ALL_DIR}/filesystem/${apk_type}/${app_folder}/${app_path}
-		    $PULL_COMMAND $target_file ${ALL_DIR}/filesystem/${apk_type}/${app_folder}/${app_path}/${apk_name}
+		    $PULL_COMMAND ${apk_type}/${app_folder}/${app_path}/ ${ALL_DIR}/filesystem/${apk_type}/${app_folder}/
 		fi
 	continue
 	done < "$SELECTED_FILE" 
@@ -597,6 +618,7 @@ all () {
 	echo "[*] Extracting /system/"
 	mkdir -p ${ALL_DIR}/filesystem/system
 	$PULL_COMMAND /system/ ${ALL_DIR}/filesystem/
+	$PULL_COMMAND /system/apex ${ALL_DIR}/filesystem/system
 	$PULL_COMMAND /system/app ${ALL_DIR}/filesystem/system
 	$PULL_COMMAND /system/bin ${ALL_DIR}/filesystem/system
 	$PULL_COMMAND /system/cameradata ${ALL_DIR}/filesystem/system
@@ -610,20 +632,21 @@ all () {
 	$PULL_COMMAND /system/lib64 ${ALL_DIR}/filesystem/system
 	$PULL_COMMAND /system/media ${ALL_DIR}/filesystem/system
 	$PULL_COMMAND /system/priv-app ${ALL_DIR}/filesystem/system
+	$PULL_COMMAND /system/product ${ALL_DIR}/filesystem/system
 	$PULL_COMMAND /system/saiv ${ALL_DIR}/filesystem/system
 	$PULL_COMMAND /system/tts ${ALL_DIR}/filesystem/system
 	$PULL_COMMAND /system/usr ${ALL_DIR}/filesystem/system
 	$PULL_COMMAND /system/vendor ${ALL_DIR}/filesystem/system
 	$PULL_COMMAND /system/xbin ${ALL_DIR}/filesystem/system
 	mkdir -p $ALL_DIR/filesystem/data/system
-    $SHELL_COMMAND cat /data/system/uiderrors.txt > $ALL_DIR/filesystem/data/system/uiderrors.txt
+    	$SHELL_COMMAND cat /data/system/uiderrors.txt > $ALL_DIR/filesystem/data/system/uiderrors.txt
 
 	echo "[*] Extracting /sdcard/"
 	mkdir -p ${ALL_DIR}/filesystem/sdcard
 	$PULL_COMMAND /sdcard/ ${ALL_DIR}/filesystem/
 
 	echo "[*] Creating TAR file" 
-	tar -cvf "$ALL_DIR"/filesystem.tar -C ${ALL_DIR} filesystem >> "$ALL_LOG_FILE" 2>/dev/null
+	tar -cvf "$ALL_DIR"/filesystem.tar -C ${ALL_DIR}/filesystem data system sdcard >> "$ALL_LOG_FILE" 2>/dev/null
     
 	echo -e "[*]\n[*]" 
 	time_update
@@ -632,7 +655,7 @@ all () {
 	echo "[*] sha1sum of ${ALL_DIR}/filesystem.tar in progress" | tee -a "$ALL_LOG_FILE"
 	shasum "${ALL_DIR}"/filesystem.tar | tee -a "$ALL_LOG_FILE"
 
-	clear && dialog --title "android triage" --msgbox "file system dump completed at ${NOW}" 6 40
+	clear && dialog --title "android triage" --msgbox "File System Acquisition completed at ${NOW}" 6 40
 	menu
 }
 
@@ -646,7 +669,7 @@ content_provider () {
 	echo -e "[*]\n[*]"  
 	echo "[*] Extracting Content Provider data"
     
-    ${SHELL_COMMAND} dumpsys package providers > ${CONTENTPROVIDER_DIR}/content_providers_list.txt
+    	${SHELL_COMMAND} dumpsys package providers > ${CONTENTPROVIDER_DIR}/content_providers_list.txt
 
 	echo "[*] QUERY CALENDAR CONTENT"
 	${SHELL_COMMAND} content query --uri content://com.android.calendar/calendar_entities > ${CONTENTPROVIDER_DIR}/calendar_calendar_entities.txt
@@ -758,7 +781,7 @@ content_provider () {
 	${SHELL_COMMAND} content query --uri content://com.android.browser/combined > ${CONTENTPROVIDER_DIR}/android_browser_combined.txt
 	echo "[*]"
 	echo -e "[*]\n[*]"
-	clear && dialog --title "android triage" --msgbox "content provider extraction completed at ${NOW}" 6 40
+	clear && dialog --title "android triage" --msgbox "Content Provider extraction completed at ${NOW}" 6 40
 	menu
 }
 
@@ -774,7 +797,7 @@ menu () {
 	5 "Acquire an ADB Backup" \
 	6 "Acquire /system folder" \
 	7 "Acquire /sdcard folder" \
-	8 "Extract APK files from /data folder" \
+	8 "Extract /data/app/ (APK files)" \
 	9 "Extract data from content providers" \
 	10 "File system dump (no root)" \
 	11 "Help" \
