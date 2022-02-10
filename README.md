@@ -59,39 +59,68 @@ First release
 - adb shell getprop
 - adb shell settings list system
 - adb shell settings list secure
-adb shell settings list global
-adb shell getprop ro.product.model
-adb shell getprop ro.product.manufacturer
-adb shell settings get global airplane_mode_on
-adb shell getprop ro.serialno
-adb shell getprop ro.build.fingerprint
-adb shell getprop ro.build.version.release
-adb shell getprop ro.build.date
-adb shell getprop ro.build.id
-adb shell getprop ro.boot.bootloader
-adb shell getprop ro.build.version.security_patch
-adb shell settings get secure bluetooth_address
-adb shell settings get secure bluetooth_name
-adb shell getprop persist.sys.timezone
-adb shell getprop ro.product.manufacturer
-adb shell getprop ro.product.device
-adb shell getprop ro.product.name
-adb shell getprop ro.product.code
-adb shell getprop ro.chipname
-adb shell getprop ril.serialnumber
-adb shell getprop gsm.version.baseband
-adb shell getprop ro.csc.country_code
-adb shell getprop persist.sys.usb.config
-adb shell getprop storage.mmc.size
-adb shell getprop ro.config.notification_sound
-adb shell getprop ro.config.alarm_alert
-adb shell getprop ro.config.ringtone
-adb shell getprop rro.config.media_sound
-adb shell date
-adb shell getprop ro.crypto.state
-adb shell uptime -s
-adb shell getprop ro.crypto.type
-adb shell dumpsys iphonesubinfo
-adb shell service call iphonesubinfo
-adb shell id
-adb shell su -c id
+- adb shell settings list global
+- adb shell getprop ro.product.model
+- adb shell getprop ro.product.manufacturer
+- adb shell settings get global airplane_mode_on
+- adb shell getprop ro.serialno
+- adb shell getprop ro.build.fingerprint
+- adb shell getprop ro.build.version.release
+- adb shell getprop ro.build.date
+- adb shell getprop ro.build.id
+- adb shell getprop ro.boot.bootloader
+- adb shell getprop ro.build.version.security_patch
+- adb shell settings get secure bluetooth_address
+- adb shell settings get secure bluetooth_name
+- adb shell getprop persist.sys.timezone
+- adb shell getprop ro.product.manufacturer
+- adb shell getprop ro.product.device
+- adb shell getprop ro.product.name
+- adb shell getprop ro.product.code
+- adb shell getprop ro.chipname
+- adb shell getprop ril.serialnumber
+- adb shell getprop gsm.version.baseband
+- adb shell getprop ro.csc.country_code
+- adb shell getprop persist.sys.usb.config
+- adb shell getprop storage.mmc.size
+- adb shell getprop ro.config.notification_sound
+- adb shell getprop ro.config.alarm_alert
+- adb shell getprop ro.config.ringtone
+- adb shell getprop rro.config.media_sound
+- adb shell date
+- adb shell getprop ro.crypto.state
+- adb shell uptime -s
+- adb shell getprop ro.crypto.type
+- adb shell dumpsys iphonesubinfo
+- adb shell service call iphonesubinfo
+- adb shell id
+- adb shell su -c id
+
+<b>Option 2 - Execute live commands</b>
+
+- adb shellid
+- adb shelluname -a
+- adb shellcat /proc/version
+- adb shelluptime
+- adb shellprintenv
+- adb shellcat /proc/partitions
+- adb shellcat /proc/cpuinfo
+- adb shellcat /proc/diskstats
+- adb shelldf
+- adb shelldf -ah
+- adb shellmount
+- adb shellip address show wlan0
+- adb shellifconfig -a
+- adb shellnetstat -an
+- adb shelllsof
+- adb shellps -ef
+- adb shelltop -n 1
+- adb shellcat /proc/sched_debug
+- adb shellvmstat
+- adb shellsysctl -a
+- adb shellime list
+- adb shellservice list
+- adb shelllogcat -S -b all
+- adb shelllogcat -d -b all V:*
+
+
