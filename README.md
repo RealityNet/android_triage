@@ -56,9 +56,9 @@ First release
 
 <b>Option 1 - Collect basic information</b>
 
-adb shell getprop
-adb shell settings list system
-adb shell settings list secure
+- adb shell getprop
+- adb shell settings list system
+- adb shell settings list secure
 adb shell settings list global
 adb shell getprop ro.product.model
 adb shell getprop ro.product.manufacturer
