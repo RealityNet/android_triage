@@ -236,7 +236,7 @@ First release
 
 <b>Option 8 - Acquire /data/app folder</b>
 
--adb pull /data/app/${app_path}/
+- adb pull /data/app/${app_path}/
 
 <b>Option 9 - Extract data from content providers</b>
 
