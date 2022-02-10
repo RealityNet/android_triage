@@ -123,5 +123,217 @@ First release
 - adb shell logcat -S -b all
 - adb shell logcat -d -b all V:*
 
+<b>Option 3 - Execute package manager commands</b>
 
+- adb shell pm get-max-users
+- adb shell pm list users
+- adb shell pm list features
+- adb shell pm list instrumentation
+- adb shell pm list libraries -f
+- adb shell pm list packages -f
+- adb shell pm list packages -f -u
+- adb shell pm list permissions -f
+- adb shell cat /data/system/uiderrors.txt
+
+<b>Option 4 - Execute bugreport,dumpsys,appops</b>
+
+- adb shell bugreport
+- adb shell dumpsys
+- adb shell dumpsys account
+- adb shell dumpsys activity
+- adb shell dumpsys alarm
+- adb shell dumpsys appops
+- adb shell dumpsys audio
+- adb shell dumpsys autofill
+- adb shell dumpsys backup
+- adb shell dumpsys battery
+- adb shell dumpsys batteryproperties
+- adb shell dumpsys batterystats
+- adb shell dumpsys bluetooth_manager
+- adb shell dumpsys bluetooth_manager | grep 'BOOT_COMPLETED\|AIRPLANE'
+- adb shell dumpsys carrier_config
+- adb shell dumpsys clipboard
+- adb shell dumpsys connectivity
+- adb shell dumpsys content
+- adb shell dumpsys cpuinfo
+- adb shell dumpsys dbinfo
+- adb shell dumpsys dbinfo -v
+- adb shell dumpsys device_policy
+- adb shell dumpsys devicestoragemonitor
+- adb shell dumpsys diskstats   
+- adb shell dumpsys display
+- adb shell dumpsys dropbox
+- adb shell dumpsys gfxinfo
+- adb shell dumpsys iphonesubinfo
+- adb shell dumpsys jobscheduler
+- adb shell dumpsys location
+- adb shell dumpsys meminfo -t 60 -a
+- adb shell dumpsys mount
+- adb shell dumpsys netpolicy
+- adb shell dumpsys netstats
+- adb shell dumpsys network_management
+- adb shell dumpsys network_score
+- adb shell dumpsys notification
+- adb shell dumpsys notification --noredact
+- adb shell dumpsys package
+- adb shell dumpsys password_policy
+- adb shell dumpsys permission
+- adb shell dumpsys phone
+- adb shell dumpsys power
+- adb shell dumpsys procstats --full-details
+- adb shell dumpsys restriction_policy
+- adb shell dumpsys sdhms
+- adb shell dumpsys sec_location
+- adb shell dumpsys secims
+- adb shell dumpsys search
+- adb shell dumpsys sensorservice
+- adb shell dumpsys settings
+- adb shell dumpsys shortcut
+- adb shell dumpsys stats
+- adb shell dumpsys statusbar
+- adb shell dumpsys storaged
+- adb shell dumpsys telecom
+- adb shell dumpsys usagestats
+- adb shell dumpsys user
+- adb shell dumpsys usb
+- adb shell dumpsys vibrator
+- adb shell dumpsys voip
+- adb shell dumpsys wallpaper
+- adb shell dumpsys wifi
+- adb shell dumpsys window
+- adb shell appops get $pkg
+
+<b>Option 5 - Acquire an ADB Backup</b>
+
+- adb backup -all -shared -system -keyvalue -apk -obb -f backup.ab
+
+<b>Option 6 - Acquire /system folder</b>
+
+- adb pull /system/
+- adb pull /system/apex
+- adb pull /system/app
+- adb pull /system/bin
+- adb pull /system/cameradata
+- adb pull /system/container
+- adb pull /system/etc
+- adb pull /system/fake-libs
+- adb pull /system/fonts
+- adb pull /system/framework
+- adb pull /system/hidden
+- adb pull /system/lib
+- adb pull /system/lib64
+- adb pull /system/media
+- adb pull /system/priv-app
+- adb pull /system/saiv
+- adb pull /system/tts
+- adb pull /system/usr
+- adb pull /system/vendor
+- adb pull /system/xbin
+
+<b>Option 7 - Acquire /sdcard folder</b>
+
+- adb pull /sdcard
+
+<b>Option 8 - Acquire /data/app folder</b>
+
+-adb pull /data/app/${app_path}/
+
+<b>Option 9 - Extract data from content providers</b>
+
+- adb shell dumpsys package providers
+- adb shell content query --uri content://com.android.calendar/calendar_entities
+- adb shell content query --uri content://com.android.calendar/calendars
+- adb shell content query --uri content://com.android.calendar/attendees
+- adb shell content query --uri content://com.android.calendar/event_entities
+- adb shell content query --uri content://com.android.calendar/events
+- adb shell content query --uri content://com.android.calendar/properties
+- adb shell content query --uri content://com.android.calendar/reminders
+- adb shell content query --uri content://com.android.calendar/calendar_alerts
+- adb shell content query --uri content://com.android.calendar/colors
+- adb shell content query --uri content://com.android.calendar/extendedproperties
+- adb shell content query --uri content://com.android.calendar/syncstate
+- adb shell content query --uri content://com.android.contacts/raw_contacts
+- adb shell content query --uri content://com.android.contacts/directories
+- adb shell content query --uri content://com.android.contacts/syncstate
+- adb shell content query --uri content://com.android.contacts/profile/syncstate
+- adb shell content query --uri content://com.android.contacts/contacts
+- adb shell content query --uri content://com.android.contacts/profile/raw_contacts
+- adb shell content query --uri content://com.android.contacts/profile
+- adb shell content query --uri content://com.android.contacts/profile/as_vcard
+- adb shell content query --uri content://com.android.contacts/stream_items
+- adb shell content query --uri content://com.android.contacts/stream_items/photo
+- adb shell content query --uri content://com.android.contacts/stream_items_limit
+- adb shell content query --uri content://com.android.contacts/data
+- adb shell content query --uri content://com.android.contacts/raw_contact_entities
+- adb shell content query --uri content://com.android.contacts/profile/raw_contact_entities
+- adb shell content query --uri content://com.android.contacts/status_updates
+- adb shell content query --uri content://com.android.contacts/data/phones
+- adb shell content query --uri content://com.android.contacts/data/phones/filter
+- adb shell content query --uri content://com.android.contacts/data/emails/lookup
+- adb shell content query --uri content://com.android.contacts/data/emails/filter
+- adb shell content query --uri content://com.android.contacts/data/emails
+- adb shell content query --uri content://com.android.contacts/data/postals
+- adb shell content query --uri content://com.android.contacts/groups
+- adb shell content query --uri content://com.android.contacts/groups_summary
+- adb shell content query --uri content://com.android.contacts/aggregation_exceptions
+- adb shell content query --uri content://com.android.contacts/settings
+- adb shell content query --uri content://com.android.contacts/provider_status
+- adb shell content query --uri content://com.android.contacts/photo_dimensions
+- adb shell content query --uri content://com.android.contacts/deleted_contacts
+- adb shell content query --uri content://downloads/my_downloads
+- adb shell content query --uri content://downloads/download
+- adb shell content query --uri content://media/external/file
+- adb shell content query --uri content://media/external/images/media
+- adb shell content query --uri content://media/external/images/thumbnails
+- adb shell content query --uri content://media/external/audio/media
+- adb shell content query --uri content://media/external/audio/genres
+- adb shell content query --uri content://media/external/audio/playlists
+- adb shell content query --uri content://media/external/audio/artists
+- adb shell content query --uri content://media/external/audio/albums
+- adb shell content query --uri content://media/external/video/media
+- adb shell content query --uri content://media/external/video/thumbnails
+- adb shell content query --uri content://media/internal/file
+- adb shell content query --uri content://media/internal/images/media
+- adb shell content query --uri content://media/internal/images/thumbnails
+- adb shell content query --uri content://media/internal/audio/media
+- adb shell content query --uri content://media/internal/audio/genres
+- adb shell content query --uri content://media/internal/audio/playlists
+- adb shell content query --uri content://media/internal/audio/artists
+- adb shell content query --uri content://media/internal/audio/albums
+- adb shell content query --uri content://media/internal/video/media
+- adb shell content query --uri content://media/internal/video/thumbnails
+- adb shell content query --uri content://settings/system
+- adb shell content query --uri content://settings/system/ringtone
+- adb shell content query --uri content://settings/system/alarm_alert
+- adb shell content query --uri content://settings/system/notification_sound
+- adb shell content query --uri content://settings/secure
+- adb shell content query --uri content://settings/global
+- adb shell content query --uri content://settings/bookmarks
+- adb shell content query --uri content://com.google.settings/partner
+- adb shell content query --uri content://nwkinfo/nwkinfo/carriers
+- adb shell content query --uri content://com.android.settings.personalvibration.PersonalVibrationProvider/
+- adb shell content query --uri content://settings/system/bluetooth_devices
+- adb shell content query --uri content://settings/system/powersavings_appsettings
+- adb shell content query --uri content://user_dictionary/words
+- adb shell content query --uri content://browser/bookmarks
+- adb shell content query --uri content://browser/searches
+- adb shell content query --uri content://com.android.browser
+- adb shell content query --uri content://com.android.browser/accounts
+- adb shell content query --uri content://com.android.browser/accounts/account_name
+- adb shell content query --uri content://com.android.browser/accounts/account_type
+- adb shell content query --uri content://com.android.browser/accounts/sourceid
+- adb shell content query --uri content://com.android.browser/settings
+- adb shell content query --uri content://com.android.browser/syncstate
+- adb shell content query --uri content://com.android.browser/images
+- adb shell content query --uri content://com.android.browser/image_mappings
+- adb shell content query --uri content://com.android.browser/bookmarks
+- adb shell content query --uri content://com.android.browser/bookmarks/folder
+- adb shell content query --uri content://com.android.browser/history
+- adb shell content query --uri content://com.android.browser/bookmarks/search_suggest_query
+- adb shell content query --uri content://com.android.browser/searches
+- adb shell content query --uri content://com.android.browser/combined
+
+<b>Option 10 - Extract system dump (no root)</b>
+
+- Option 6 + Option 7 + Option 8
 
