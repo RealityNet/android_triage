@@ -2,7 +2,7 @@
 
 Bash script to extract data from an Android device
 
-Developed and tested on Mac OS X Mojave (10.14.6), but should work also on Linux
+Developed and tested on Mac OS X Mojave (10.14.6), but works also on Linux
 
 <b>Mandatory Requirements</b>
 
