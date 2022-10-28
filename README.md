@@ -52,6 +52,12 @@ First release
 - Added "Special thanks" section
 - Minor fixes
 
+<b>Version 1.5 [28/10/2022]</b>
+
+- Added various dumpsys commands
+- Added some "telecom" commands
+- Minor fixes
+
 <b>List of executed commands</b>
 
 <b>Option 1 - Collect basic information</b>
@@ -131,8 +137,11 @@ First release
 - adb shell pm list instrumentation
 - adb shell pm list libraries -f
 - adb shell pm list packages -f
+- adb shell pm list packages -d
+- adb shell pm list packages -e
 - adb shell pm list packages -f -u
 - adb shell pm list permissions -f
+- adb shell pm list permission-groups
 - adb shell cat /data/system/uiderrors.txt
 
 <b>Option 4 - Execute bugreport,dumpsys,appops</b>
@@ -140,8 +149,13 @@ First release
 - adb shell bugreport
 - adb shell dumpsys
 - adb shell dumpsys account
+- adb shell dumpsys accessibility
 - adb shell dumpsys activity
 - adb shell dumpsys alarm
+- adb shell dumpsys app_binding
+- adb shell dumpsys app_hibernation
+- adb shell dumpsys application_policy
+- adb shell dumpsys appwidget
 - adb shell dumpsys appops
 - adb shell dumpsys audio
 - adb shell dumpsys autofill
@@ -149,39 +163,61 @@ First release
 - adb shell dumpsys battery
 - adb shell dumpsys batteryproperties
 - adb shell dumpsys batterystats
+- adb shell dumpsys batterystats -c
+- adb shell dumpsys biometric
+- adb shell dumpsys blob_store
 - adb shell dumpsys bluetooth_manager
 - adb shell dumpsys bluetooth_manager | grep 'BOOT_COMPLETED\|AIRPLANE'
+- adb shell dumpsys cacheinfo
 - adb shell dumpsys carrier_config
 - adb shell dumpsys clipboard
+- adb shell dumpsys color_display
 - adb shell dumpsys connectivity
+- adb shell dumpsys connmetrics
 - adb shell dumpsys content
+- adb shell dumpsys content_capture
+- adb shell dumpsys cover
 - adb shell dumpsys cpuinfo
+- adb shell dumpsys desktopmode
 - adb shell dumpsys dbinfo
 - adb shell dumpsys dbinfo -v
 - adb shell dumpsys device_policy
+- adb shell dumpsys device_state
 - adb shell dumpsys devicestoragemonitor
 - adb shell dumpsys diskstats   
 - adb shell dumpsys display
 - adb shell dumpsys dropbox
 - adb shell dumpsys gfxinfo
+- adb shell dumpsys graphicsstats
+- adb shell dumpsys hardware_properties
+- adb shell dumpsys input
+- adb shell dumpsys isub
 - adb shell dumpsys iphonesubinfo
 - adb shell dumpsys jobscheduler
 - adb shell dumpsys location
+- adb shell dumpsys lock_settings
 - adb shell dumpsys meminfo -t 60 -a
 - adb shell dumpsys mount
 - adb shell dumpsys netpolicy
 - adb shell dumpsys netstats
+- adb shell dumpsys netstats detail
 - adb shell dumpsys network_management
 - adb shell dumpsys network_score
 - adb shell dumpsys notification
 - adb shell dumpsys notification --noredact
+- adb shell dumpsys overlay
 - adb shell dumpsys package
 - adb shell dumpsys password_policy
 - adb shell dumpsys permission
+- adb shell dumpsys permissionmgr
 - adb shell dumpsys phone
 - adb shell dumpsys power
+- adb shell dumpsys print
 - adb shell dumpsys procstats --full-details
+- adb shell dumpsys procstats --full-details -c
 - adb shell dumpsys restriction_policy
+- adb shell dumpsys role
+- adb shell dumpsys rollback
 - adb shell dumpsys sdhms
 - adb shell dumpsys sec_location
 - adb shell dumpsys secims
@@ -193,6 +229,9 @@ First release
 - adb shell dumpsys statusbar
 - adb shell dumpsys storaged
 - adb shell dumpsys telecom
+- adb shell dumpsys thermalservice
+- adb shell dumpsys time_detector
+- adb shell dumpsys time_zone_detector
 - adb shell dumpsys usagestats
 - adb shell dumpsys user
 - adb shell dumpsys usb
@@ -200,7 +239,13 @@ First release
 - adb shell dumpsys voip
 - adb shell dumpsys wallpaper
 - adb shell dumpsys wifi
+- adb shell dumpsys wifiaware
+- adb shell dumpsys wifiscanner
 - adb shell dumpsys window
+- adb shell telecom get-default-dialer
+- adb shell telecom get-system-dialer
+- adb shell telecom get-max-phones
+- adb shell telecom get-sim-config
 - adb shell appops get $pkg
 
 <b>Option 5 - Acquire an ADB Backup</b>
