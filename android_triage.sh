@@ -2,7 +2,7 @@
 
 # android_triage
 # Mattia Epifani && Giovanni Rattaro
-# 20220210 V1.4
+# 20220210 V1.5
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ check_tools() {
 
 set_var () {
 	# generic var
-	VERSION="1.4 - 20220210"
+	VERSION="1.5 - 20221028"
 
 	# generic commands var
 	SHELL_COMMAND="${ADB} shell"
@@ -298,9 +298,12 @@ package_manager_commands () {
 	echo "[*] pm get-max-users" && $SHELL_COMMAND pm get-max-users > "$PM_DIR"/pm_get_max_users.txt
 	echo "[*] pm list users" && $SHELL_COMMAND pm list users > "$PM_DIR"/pm_list_users.txt
 	echo "[*] pm list features" && $SHELL_COMMAND pm list features > "$PM_DIR"/pm_list_features.txt
+	echo "[*] pm list permission-groups" && $SHELL_COMMAND pm list permission-groups > "$PM_DIR"/pm_list_permission_groups.txt
 	echo "[*] pm list instrumentation" && $SHELL_COMMAND pm list instrumentation > "$PM_DIR"/pm_list_instrumentation.txt
 	echo "[*] pm list libraries -f" && $SHELL_COMMAND pm list libraries -f > "$PM_DIR"/pm_list_libraries-f.txt
 	echo "[*] pm list packages -f" && $SHELL_COMMAND pm list packages -f > "$PM_DIR"/pm_list_packages-f.txt
+	echo "[*] pm list packages -d" && $SHELL_COMMAND pm list packages -d > "$PM_DIR"/pm_list_packages-d.txt
+	echo "[*] pm list packages -e" && $SHELL_COMMAND pm list packages -e > "$PM_DIR"/pm_list_packages-e.txt
 	echo "[*] pm list packages -f -u" && $SHELL_COMMAND pm list packages -f -u > "$PM_DIR"/pm_list_packages-f-u.txt
 	echo "[*] pm list permissions -f" && $SHELL_COMMAND pm list permissions -f > "$PM_DIR"/pm_list_permissions-f.txt
 	echo "[*] cat /data/system/uiderrors.txt" && $SHELL_COMMAND cat /data/system/uiderrors.txt > "$PM_DIR"/uiderrors.txt
@@ -353,29 +356,45 @@ dumpsys () {
 	echo -e "[*]\n[*]"		
 	echo -e "[*]\n[*]"  
 	echo "[*] Executing bugreport and dumpsys commands"
-    	echo "[*] bugreport" && $BUGREPORT_COMMAND "$DUMPSYS_DIR"/bugreport.zip
+    echo "[*] bugreport" && $BUGREPORT_COMMAND "$DUMPSYS_DIR"/bugreport.zip
 	echo "[*] dumpsys" && $SHELL_COMMAND dumpsys > "$DUMPSYS_DIR"/dumpsys.txt
+	echo "[*] dumpsys -l" && $SHELL_COMMAND dumpsys -l > "$DUMPSYS_DIR"/dumpsys-l.txt    
 	echo "[*] dumpsys account" && $SHELL_COMMAND dumpsys account > "$DUMPSYS_DIR"/dumpsys_account.txt 
-    	echo "[*] dumpsys activity" && $SHELL_COMMAND dumpsys activity > "$DUMPSYS_DIR"/dumpsys_activity.txt
+	echo "[*] dumpsys accessibility" && $SHELL_COMMAND dumpsys accessibility > "$DUMPSYS_DIR"/dumpsys_accessiblity.txt 
+    echo "[*] dumpsys activity" && $SHELL_COMMAND dumpsys activity > "$DUMPSYS_DIR"/dumpsys_activity.txt
    	echo "[*] dumpsys alarm" && $SHELL_COMMAND dumpsys alarm > "$DUMPSYS_DIR"/dumpsys_alarm.txt  
-	echo "[*] dumpsys appops" && $SHELL_COMMAND dumpsys appops > "$DUMPSYS_DIR"/dumpsys_appops.txt  
+	echo "[*] dumpsys app_binding" && $SHELL_COMMAND dumpsys app_binding > "$DUMPSYS_DIR"/dumpsys_app_binding.txt  
+	echo "[*] dumpsys app_hibernation" && $SHELL_COMMAND dumpsys app_hibernation > "$DUMPSYS_DIR"/dumpsys_app_hibernation.txt  
+	echo "[*] dumpsys application_policy" && $SHELL_COMMAND dumpsys application_policy > "$DUMPSYS_DIR"/dumpsys_application_policy.txt  
+	echo "[*] dumpsys appwidget" && $SHELL_COMMAND dumpsys appwidget > "$DUMPSYS_DIR"/dumpsys_appwidget.txt  
+    echo "[*] dumpsys appops" && $SHELL_COMMAND dumpsys appops > "$DUMPSYS_DIR"/dumpsys_appops.txt  
 	echo "[*] dumpsys audio" && $SHELL_COMMAND dumpsys audio > "$DUMPSYS_DIR"/dumpsys_audio.txt  
  	echo "[*] dumpsys autofill" && $SHELL_COMMAND dumpsys autofill > "$DUMPSYS_DIR"/dumpsys_autofill.txt  
  	echo "[*] dumpsys backup" && $SHELL_COMMAND dumpsys backup > "$DUMPSYS_DIR"/dumpsys_backup.txt  
 	echo "[*] dumpsys battery" && $SHELL_COMMAND dumpsys battery > "$DUMPSYS_DIR"/dumpsys_battery.txt 
 	echo "[*] dumpsys batteryproperties" && $SHELL_COMMAND dumpsys batteryproperties > "$DUMPSYS_DIR"/dumpsys_batteryproperties.txt 
 	echo "[*] dumpsys batterystats" && $SHELL_COMMAND dumpsys batterystats > "$DUMPSYS_DIR"/dumpsys_batterystats.txt
+	echo "[*] dumpsys batterystats -c" && $SHELL_COMMAND dumpsys batterystats -c > "$DUMPSYS_DIR"/dumpsys_batterystats-c.txt
+	echo "[*] dumpsys biometric" && $SHELL_COMMAND dumpsys biometric > "$DUMPSYS_DIR"/dumpsys_biometric.txt
+	echo "[*] dumpsys blob_store" && $SHELL_COMMAND dumpsys blob_store > "$DUMPSYS_DIR"/dumpsys_blob_store.txt
 	echo "[*] dumpsys bluetooth_manager" && $SHELL_COMMAND dumpsys bluetooth_manager > "$DUMPSYS_DIR"/dumpsys_bluetooth_manager.txt
 	echo "[*] dumpsys bluetooth_manager | grep 'BOOT_COMPLETED\|AIRPLANE'" && $SHELL_COMMAND dumpsys bluetooth_manager | grep 'BOOT_COMPLETED\|AIRPLANE' > "$DUMPSYS_DIR"/dumpsys_bluetooth_manager_boot.txt
-    	echo "[*] dumpsys carrier_config" && $SHELL_COMMAND dumpsys carrier_config > "$DUMPSYS_DIR"/dumpsys_carrier_config.txt
+	echo "[*] dumpsys cacheinfo" && $SHELL_COMMAND dumpsys cacheinfo > "$DUMPSYS_DIR"/dumpsys_cacheinfo.txt
+    echo "[*] dumpsys carrier_config" && $SHELL_COMMAND dumpsys carrier_config > "$DUMPSYS_DIR"/dumpsys_carrier_config.txt
  	echo "[*] dumpsys clipboard" && $SHELL_COMMAND dumpsys clipboard > "$DUMPSYS_DIR"/dumpsys_clipboard.txt 
+ 	echo "[*] dumpsys color_display" && $SHELL_COMMAND dumpsys color_display > "$DUMPSYS_DIR"/dumpsys_color_display.txt 
 	echo "[*] dumpsys connectivity" && $SHELL_COMMAND dumpsys connectivity > "$DUMPSYS_DIR"/dumpsys_connectivity.txt
+	echo "[*] dumpsys connmetrics" && $SHELL_COMMAND dumpsys connmetrics > "$DUMPSYS_DIR"/dumpsys_connmetrics.txt
 	echo "[*] dumpsys content" && $SHELL_COMMAND dumpsys content > "$DUMPSYS_DIR"/dumpsys_content.txt
-	echo "[*] dumpsys cpuinfo" && $SHELL_COMMAND dumpsys cpuinfo > "$DUMPSYS_DIR"/dumpsys_cpuinfo.txt
+	echo "[*] dumpsys content_capture" && $SHELL_COMMAND dumpsys content_capture > "$DUMPSYS_DIR"/dumpsys_content_capture.txt
+	echo "[*] dumpsys cover" && $SHELL_COMMAND dumpsys cover > "$DUMPSYS_DIR"/dumpsys_cover.txt    
+    echo "[*] dumpsys cpuinfo" && $SHELL_COMMAND dumpsys cpuinfo > "$DUMPSYS_DIR"/dumpsys_cpuinfo.txt
+    echo "[*] dumpsys desktopmode" && $SHELL_COMMAND dumpsys desktopmode > "$DUMPSYS_DIR"/dumpsys_desktopmode.txt
 	echo "[*] dumpsys dbinfo" && $SHELL_COMMAND dumpsys dbinfo > "$DUMPSYS_DIR"/dumpsys_dbinfo.txt 
-    	echo "[*] dumpsys dbinfo -v" && $SHELL_COMMAND dumpsys dbinfo -v > "$DUMPSYS_DIR"/dumpsys_dbinfo.txt 
-    	echo "[*] dumpsys device_policy" && $SHELL_COMMAND dumpsys device_policy > "$DUMPSYS_DIR"/dumpsys_device_policy.txt
-    	echo "[*] dumpsys devicestoragemonitor" && $SHELL_COMMAND dumpsys devicestoragemonitor > "$DUMPSYS_DIR"/dumpsys_devicestoragemonitor.txt
+    echo "[*] dumpsys dbinfo -v" && $SHELL_COMMAND dumpsys dbinfo -v > "$DUMPSYS_DIR"/dumpsys_dbinfo.txt 
+    echo "[*] dumpsys device_policy" && $SHELL_COMMAND dumpsys device_policy > "$DUMPSYS_DIR"/dumpsys_device_policy.txt
+    echo "[*] dumpsys device_state" && $SHELL_COMMAND dumpsys device_state > "$DUMPSYS_DIR"/dumpsys_device_state.txt
+    echo "[*] dumpsys devicestoragemonitor" && $SHELL_COMMAND dumpsys devicestoragemonitor > "$DUMPSYS_DIR"/dumpsys_devicestoragemonitor.txt
 	echo "[*] dumpsys diskstats" && $SHELL_COMMAND dumpsys diskstats > "$DUMPSYS_DIR"/dumpsys_diskstats.txt 
     
     	#Process dumpsys diskstats - See here https://android.stackexchange.com/questions/220442/obtaining-app-storage-details-via-adb
@@ -413,24 +432,38 @@ dumpsys () {
 	echo "[*] dumpsys display" && $SHELL_COMMAND dumpsys display > "$DUMPSYS_DIR"/dumpsys_display.txt
 	echo "[*] dumpsys dropbox" && $SHELL_COMMAND dumpsys dropbox > "$DUMPSYS_DIR"/dumpsys_dropbox.txt
 	echo "[*] dumpsys gfxinfo" && $SHELL_COMMAND dumpsys gfxinfo > "$DUMPSYS_DIR"/dumpsys_gfxinfo.txt
-   	echo "[*] dumpsys iphonesubinfo" && $SHELL_COMMAND dumpsys iphonesubinfo > "$DUMPSYS_DIR"/dumpsys_iphonesubinfo.txt
-    	echo "[*] dumpsys jobscheduler" && $SHELL_COMMAND dumpsys jobscheduler > "$DUMPSYS_DIR"/dumpsys_jobscheduler.txt
+	echo "[*] dumpsys graphicsstats" && $SHELL_COMMAND dumpsys graphicsstats > "$DUMPSYS_DIR"/dumpsys_graphicsstats.txt
+   	echo "[*] dumpsys hardware_properties" && $SHELL_COMMAND dumpsys hardware_properties > "$DUMPSYS_DIR"/dumpsys_hardware_properties.txt
+   	echo "[*] dumpsys input" && $SHELL_COMMAND dumpsys input > "$DUMPSYS_DIR"/dumpsys_hardware_input.txt
+   	echo "[*] dumpsys isub" && $SHELL_COMMAND dumpsys isub > "$DUMPSYS_DIR"/dumpsys_hardware_isub.txt
+    echo "[*] dumpsys iphonesubinfo" && $SHELL_COMMAND dumpsys iphonesubinfo > "$DUMPSYS_DIR"/dumpsys_iphonesubinfo.txt
+    echo "[*] dumpsys jobscheduler" && $SHELL_COMMAND dumpsys jobscheduler > "$DUMPSYS_DIR"/dumpsys_jobscheduler.txt
+	echo "[*] dumpsys launcherapps" && $SHELL_COMMAND dumpsys launcherapps > "$DUMPSYS_DIR"/dumpsys_launcherapps.txt 
 	echo "[*] dumpsys location" && $SHELL_COMMAND dumpsys location > "$DUMPSYS_DIR"/dumpsys_location.txt 
-	echo "[*] dumpsys meminfo -t 60 -a" && $SHELL_COMMAND dumpsys meminfo -t 60 -a > "$DUMPSYS_DIR"/dumpsys_meminfo-a.txt
+	echo "[*] dumpsys lock_settings" && $SHELL_COMMAND dumpsys lock_settings > "$DUMPSYS_DIR"/dumpsys_lock_settings.txt 
+    echo "[*] dumpsys meminfo -t 60 -a" && $SHELL_COMMAND dumpsys meminfo -t 60 -a > "$DUMPSYS_DIR"/dumpsys_meminfo-a.txt
+    echo "[*] dumpsys meminfo -t 60 -a -c" && $SHELL_COMMAND dumpsys meminfo -t 60 -a -c > "$DUMPSYS_DIR"/dumpsys_meminfo-a-c.txt
 	echo "[*] dumpsys mount" && $SHELL_COMMAND dumpsys mount > "$DUMPSYS_DIR"/dumpsys_mount.txt
 	echo "[*] dumpsys netpolicy" && $SHELL_COMMAND dumpsys netpolicy > "$DUMPSYS_DIR"/dumpsys_netpolicy.txt
-    	echo "[*] dumpsys netstats" && $SHELL_COMMAND dumpsys netstats > "$DUMPSYS_DIR"/dumpsys_netstats.txt
+    echo "[*] dumpsys netstats" && $SHELL_COMMAND dumpsys netstats > "$DUMPSYS_DIR"/dumpsys_netstats.txt
+    echo "[*] dumpsys netstats detail" && $SHELL_COMMAND dumpsys netstats detail > "$DUMPSYS_DIR"/dumpsys_netstats_detail.txt
 	echo "[*] dumpsys network_management" && $SHELL_COMMAND dumpsys network_management > "$DUMPSYS_DIR"/dumpsys_network_management.txt
 	echo "[*] dumpsys network_score" && $SHELL_COMMAND dumpsys network_score > "$DUMPSYS_DIR"/dumpsys_network_score.txt
 	echo "[*] dumpsys notification" && $SHELL_COMMAND dumpsys notification > "$DUMPSYS_DIR"/dumpsys_notification.txt
 	echo "[*] dumpsys notification --noredact" && $SHELL_COMMAND dumpsys notification --noredact > "$DUMPSYS_DIR"/dumpsys_notification_noredact.txt
-	echo "[*] dumpsys package" && $SHELL_COMMAND dumpsys package > "$DUMPSYS_DIR"/dumpsys_package.txt
-    	echo "[*] dumpsys password_policy" && $SHELL_COMMAND dumpsys password_policy > "$DUMPSYS_DIR"/dumpsys_password_policy.txt
-    	echo "[*] dumpsys permission" && $SHELL_COMMAND dumpsys permission > "$DUMPSYS_DIR"/dumpsys_permission.txt
-	echo "[*] dumpsys phone" && $SHELL_COMMAND dumpsys phone > "$DUMPSYS_DIR"/dumpsys_phone.txt 
+	echo "[*] dumpsys overlay" && $SHELL_COMMAND dumpsys overlay > "$DUMPSYS_DIR"/dumpsys_overlay.txt
+    echo "[*] dumpsys package" && $SHELL_COMMAND dumpsys package > "$DUMPSYS_DIR"/dumpsys_package.txt
+    echo "[*] dumpsys password_policy" && $SHELL_COMMAND dumpsys password_policy > "$DUMPSYS_DIR"/dumpsys_password_policy.txt
+    echo "[*] dumpsys permission" && $SHELL_COMMAND dumpsys permission > "$DUMPSYS_DIR"/dumpsys_permission.txt
+    echo "[*] dumpsys permissionmgr" && $SHELL_COMMAND dumpsys permissionmgr > "$DUMPSYS_DIR"/dumpsys_permissionmgr.txt
+    echo "[*] dumpsys phone" && $SHELL_COMMAND dumpsys phone > "$DUMPSYS_DIR"/dumpsys_phone.txt 
 	echo "[*] dumpsys power" && $SHELL_COMMAND dumpsys power > "$DUMPSYS_DIR"/dumpsys_power.txt 
+	echo "[*] dumpsys print" && $SHELL_COMMAND dumpsys print > "$DUMPSYS_DIR"/dumpsys_print.txt 
   	echo "[*] dumpsys procstats --full-details" && $SHELL_COMMAND dumpsys procstats --full-details > "$DUMPSYS_DIR"/dumpsys_procstats--full-details.txt 
+  	echo "[*] dumpsys procstats --full-details -c" && $SHELL_COMMAND dumpsys procstats --full-details -c > "$DUMPSYS_DIR"/dumpsys_procstats--full-details-c.txt 
 	echo "[*] dumpsys restriction_policy" && $SHELL_COMMAND dumpsys restriction_policy > "$DUMPSYS_DIR"/dumpsys_restriction_policy.txt 
+    echo "[*] dumpsys role" && $SHELL_COMMAND dumpsys role > "$DUMPSYS_DIR"/dumpsys_role.txt 
+    echo "[*] dumpsys rollback" && $SHELL_COMMAND dumpsys rollback > "$DUMPSYS_DIR"/dumpsys_rollback.txt 
 	echo "[*] dumpsys sdhms" && $SHELL_COMMAND dumpsys sdhms > "$DUMPSYS_DIR"/dumpsys_sdhms.txt 
 	echo "[*] dumpsys sec_location" && $SHELL_COMMAND dumpsys sec_location > "$DUMPSYS_DIR"/dumpsys_sec_location.txt 
 	echo "[*] dumpsys secims" && $SHELL_COMMAND dumpsys secims > "$DUMPSYS_DIR"/dumpsys_secims.txt 
@@ -440,16 +473,27 @@ dumpsys () {
 	echo "[*] dumpsys shortcut" && $SHELL_COMMAND dumpsys shortcut > "$DUMPSYS_DIR"/dumpsys_shortcut.txt 
 	echo "[*] dumpsys stats" && $SHELL_COMMAND dumpsys stats > "$DUMPSYS_DIR"/dumpsys_stats.txt 
 	echo "[*] dumpsys statusbar" && $SHELL_COMMAND dumpsys statusbar > "$DUMPSYS_DIR"/dumpsys_statusbar.txt 
-    	echo "[*] dumpsys storaged" && $SHELL_COMMAND dumpsys storaged > "$DUMPSYS_DIR"/dumpsys_storaged.txt 
+    echo "[*] dumpsys storaged" && $SHELL_COMMAND dumpsys storaged > "$DUMPSYS_DIR"/dumpsys_storaged.txt 
 	echo "[*] dumpsys telecom" && $SHELL_COMMAND dumpsys telecom > "$DUMPSYS_DIR"/dumpsys_telecom.txt 
-    	echo "[*] dumpsys usagestats" && $SHELL_COMMAND dumpsys usagestats > "$DUMPSYS_DIR"/dumpsys_usagestats.txt 
+    echo "[*] dumpsys thermalservice" && $SHELL_COMMAND dumpsys thermalservice > "$DUMPSYS_DIR"/dumpsys_thermalservice.txt 
+    echo "[*] dumpsys time_detector" && $SHELL_COMMAND dumpsys time_detector > "$DUMPSYS_DIR"/dumpsys_time_detector.txt  
+    echo "[*] dumpsys time_zone_detector" && $SHELL_COMMAND dumpsys time_zone_detector > "$DUMPSYS_DIR"/dumpsys_time_zone_detector.txt  
+    echo "[*] dumpsys usagestats" && $SHELL_COMMAND dumpsys usagestats > "$DUMPSYS_DIR"/dumpsys_usagestats.txt 
 	echo "[*] dumpsys user" && $SHELL_COMMAND dumpsys user > "$DUMPSYS_DIR"/dumpsys_user.txt 
 	echo "[*] dumpsys usb" && $SHELL_COMMAND dumpsys usb > "$DUMPSYS_DIR"/dumpsys_usb.txt 
 	echo "[*] dumpsys vibrator" && $SHELL_COMMAND dumpsys vibrator > "$DUMPSYS_DIR"/dumpsys_vibrator.txt 
 	echo "[*] dumpsys voip" && $SHELL_COMMAND dumpsys voip > "$DUMPSYS_DIR"/dumpsys_voip.txt 
-    	echo "[*] dumpsys wallpaper" && $SHELL_COMMAND dumpsys wallpaper > "$DUMPSYS_DIR"/dumpsys_wallpaper.txt   
-    	echo "[*] dumpsys wifi" && $SHELL_COMMAND dumpsys wifi > "$DUMPSYS_DIR"/dumpsys_wifi.txt   
-    	echo "[*] dumpsys window" && $SHELL_COMMAND dumpsys window > "$DUMPSYS_DIR"/dumpsys_window.txt   
+    echo "[*] dumpsys wallpaper" && $SHELL_COMMAND dumpsys wallpaper > "$DUMPSYS_DIR"/dumpsys_wallpaper.txt   
+    echo "[*] dumpsys wifi" && $SHELL_COMMAND dumpsys wifi > "$DUMPSYS_DIR"/dumpsys_wifi.txt 
+    echo "[*] dumpsys wifiaware" && $SHELL_COMMAND dumpsys wifiaware > "$DUMPSYS_DIR"/dumpsys_wifiaware.txt
+    echo "[*] dumpsys wifiscanner" && $SHELL_COMMAND dumpsys wifiscanner > "$DUMPSYS_DIR"/dumpsys_wifiscanner.txt 
+    echo "[*] dumpsys window" && $SHELL_COMMAND dumpsys window > "$DUMPSYS_DIR"/dumpsys_window.txt
+    
+    echo "[*] telecom get-default-dialer" && $SHELL_COMMAND telecom get-default-dialer > "$DUMPSYS_DIR"/telecom_get-default-dialer.txt
+    echo "[*] telecom get-system-dialer" && $SHELL_COMMAND telecom get-system-dialer > "$DUMPSYS_DIR"/telecom_get-system-dialer.txt
+    echo "[*] telecom get-max-phones" && $SHELL_COMMAND telecom get-max-phones > "$DUMPSYS_DIR"/telecom_get-max-phones.txt
+    echo "[*] telecom get-sim-config" && $SHELL_COMMAND telecom get-sim-config > "$DUMPSYS_DIR"/telecom_get-sim-config.txt
+
 
     	#Extract appops for every package - See here https://android.stackexchange.com/questions/226282/how-can-i-see-which-applications-is-reading-the-clipboard
     
